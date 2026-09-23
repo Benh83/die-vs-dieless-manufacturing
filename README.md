@@ -2,7 +2,7 @@
 
 **Does frontier manufacturing tech change the possible and optimal size of custom manufacturing businesses?**
 
-Full disclosure. I started this project looking for minimum efficient scale, but quickly found that the real advantage of the RoboCraftsman came from lowering break-even volume. While minimum efficient scale is important long-term, break-even volume is often the factor that determines the survival of micro manufacturing business. Rather than looking at the most efficient forms of production, this project chooses a very strange constraint: one employee. While in the past, a one-employee complex industrial production business would have been generally unadvisable, new developments have made it more appealing. Small businesses may not often create the frontier, but they create a form of bottom-up resilience, frugality, and independence that strengthens both competitors and local polis.
+- **Full disclosure** I started this project looking for how the Machina Labs RoboCraftsman impacts minimum efficient scale, but quickly found that the real advantage of the RoboCraftsman came from lowering break-even volume. While minimum efficient scale is important long-term, break-even volume is often the factor that determines the survival of micro manufacturing business. Rather than looking at the most efficient forms of production, this project chooses a very strange constraint: one employee. While in the past, a one-employee complex industrial production business would have been generally unadvisable, new developments have made it more appealing. Small businesses may not often create the frontier, but they create a form of bottom-up resilience, frugality, and independence that strengthens both competitors and local polis.
 
 This is an interactive cost model for a one-employee business that sells custom, complex three-dimensional sheet-metal construction products, like formed facade panels, sculpted canopies and curved louvers(designs that would require a progressive die). Every design is new, and, being custom, each sells only 1–10 units. The model compares two ways to make them:
 
@@ -24,9 +24,9 @@ https://benh83.github.io/die-vs-dieless-manufacturing/
 
 **What the defaults show**
 
-1. **Dieless forming cuts the minimum viable scale about 5×.** Break-even drops down from 136 to 28 units per year, even when the nearest Robocraftsman is 1800 miles away. A die has a relatively high fixed cost for each design, so the Machina method is strictly better until number of designs begins to increase. Dieless forming turns most of that per-design cost into a per-unit cost. 
+1. **Dieless forming cuts the minimum viable scale about 5×.** Break-even drops down from 136 to 28 units per year, even when the nearest RoboCraftsman is 1800 miles away. A die has a relatively high fixed cost for each design, so the Machina method is strictly better until number of designs begins to increase. Dieless forming turns most of that per-design cost into a per-unit cost. 
 2. **It doesn't shrink the textbook MES.** For a one-person shop, the bottom of the AC curve sits where the employee runs out of hours. The person sets the MES, not the machine. The technology lowers the whole AC curve and moves break-even left, so the market opens up to a smaller size of firm, particularly with more complex designs.
-3. **Batch size is the hinge.** As the demand for a design scales, Robocraftsman becomes less cost effective. At 1-4 units, it's the only way a business could break even. Heterogeneity of product and experimentation unlock the real value for Robocraftsman, which has potential to reshape the types of manufacturing business that are even possible. 
+3. **Batch size is the hinge.** As the demand for a design scales, RoboCraftsman becomes less cost effective. At 1-4 units, it's the only way a business could break even. Heterogeneity of product and experimentation unlock the real value for Robocraftsman, which has potential to reshape the types of manufacturing business that are even possible. 
 
 ## The model
 
