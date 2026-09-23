@@ -9,7 +9,7 @@ This is an interactive cost model for a one-employee business that sells custom,
 
 Every assumption is a slider. Moving one updates the average-cost (AC) and marginal-cost (MC) curves, the **minimum efficient scale** (where MC = AC), and the **break-even volume** (the fewest units a year that make the business profitable).
 
-Open `index.html` in a browser. 
+https://benh83.github.io/die-vs-dieless-manufacturing/
 
 ## Results at default assumptions (5 units per design, $9,000 per unit)
 
