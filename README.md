@@ -2,7 +2,7 @@
 
 **Does frontier manufacturing tech change the possible and optimal size of custom manufacturing businesses?**
 
-This is an interactive cost model for a one-employee business that sells custom, complex three-dimensional sheet-metal construction products, like formed facade panels, sculpted canopies and curved louvers(designs that would require a progressive die. Every design is new, and, being custom, each sells only 1–10 units. The model compares two ways to make them:
+This is an interactive cost model for a one-employee business that sells custom, complex three-dimensional sheet-metal construction products, like formed facade panels, sculpted canopies and curved louvers(designs that would require a progressive die). Every design is new, and, being custom, each sells only 1–10 units. The model compares two ways to make them:
 
 - **Progressive / draw die:** a new die for every design, pressed at a host shop.
 - **Dieless robotic forming** ([Machina Labs RoboCraftsman](https://machinalabs.ai)): no die. The part is formed incrementally from a CAD toolpath.
@@ -22,9 +22,9 @@ https://benh83.github.io/die-vs-dieless-manufacturing/
 
 **What the defaults show**
 
-1. **Dieless forming cuts the minimum viable scale about 5×.** Break-even falls from ~136 to ~28 units a year, even when Machina is 1,800 miles away. A die is a fixed cost *per design*, so heterogeneous products never reach the volume that amortizes it. Dieless forming turns most of that per-design cost into a per-unit cost.
-2. **It doesn't shrink the textbook MES.** For a one-person shop, the bottom of the AC curve sits where the employee runs out of hours. The person sets the MES, not the machine. The technology lowers the whole AC curve and moves break-even left, so the band of viable firm sizes gets much wider.
-3. **Batch size is the hinge.** At 1–4 units per design, the die route never breaks even at a $9k price. At 8–10 units the two routes converge. The "Break-even by batch size" chart shows where heterogeneity makes the frontier technology necessary rather than just nice.
+1. **Dieless forming cuts the minimum viable scale about 5×.** Break-even drops down from 136 to 28 units per year, even when the nearest Robocraftsman is 1800 miles away. A die has a relatively high fixed cost for each design, so the Machina method is strictly better until number of designs begins to increase. Dieless forming turns most of that per-design cost into a per-unit cost. 
+2. **It doesn't shrink the textbook MES.** For a one-person shop, the bottom of the AC curve sits where the employee runs out of hours. The person sets the MES, not the machine. The technology lowers the whole AC curve and moves break-even left, so the market opens up to a smaller size of firm, particularly with more complex designs.
+3. **Batch size is the hinge.** As the demand for a design scales, Robocraftsman becomes less cost effective. At 1-4 units, it's the only way a business could break even. Heterogeneity of product and experimentation unlock the real value for Robocraftsman, which has potential to reshape the types of manufacturing business that are even possible. 
 
 ## The model
 
@@ -65,7 +65,7 @@ Outputs: break-even (lower and upper), MES, minimum AC, AC penalty at ½ MES (th
 
 ## Assumptions and sources
 
-All values are **synthetic**. They're chosen to be plausible, not taken from any real company's books. The full list with ranges is in [`assumptions.csv`](assumptions.csv).
+All values are **synthetic**. They're chosen to be plausible, not taken from any real company's books. I would love to update them with real data if given access to it, though. The full list with ranges is in [`assumptions.csv`](assumptions.csv).
 
 - Mid-complexity progressive dies commonly quote $15k–50k; complex multi-stage dies $25k–150k+ ([Jennison](https://www.jennisoncorp.com/post/sheet-metal-stamping-costs-explained-what-really-drives-the-price), [ML Hardware](https://www.ml-hardware.com/news/industry-news/how-much-to-get-a-metal-part-made-the-complete.html)).
 - Hidden die NRE: design engineering $3–5k, tryout $2–5k, storage $0–2k/yr ([DRA Metal](https://drametal.com/blog/sheet-metal-tooling-cost-guide/)).
