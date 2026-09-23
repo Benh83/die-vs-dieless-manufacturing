@@ -2,6 +2,8 @@
 
 **Does frontier manufacturing tech change the possible and optimal size of custom manufacturing businesses?**
 
+Full disclosure. I started this project looking for minimum efficient scale, but quickly found that the real advantage of the RoboCraftsman came from lowering break-even volume. While minimum efficient scale is important long-term, break-even volume is often the factor that determines the survival of micro manufacturing business. Rather than looking at the most efficient forms of production, this project chooses a very strange constraint: one employee. While in the past, a one-employee complex industrial production business would have been generally unadvisable, new developments have made it more appealing. Small businesses may not often create the frontier, but they create a form of bottom-up resilience, frugality, and independence that strengthens both competitors and local polis.
+
 This is an interactive cost model for a one-employee business that sells custom, complex three-dimensional sheet-metal construction products, like formed facade panels, sculpted canopies and curved louvers(designs that would require a progressive die). Every design is new, and, being custom, each sells only 1–10 units. The model compares two ways to make them:
 
 - **Progressive / draw die:** a new die for every design, pressed at a host shop.
