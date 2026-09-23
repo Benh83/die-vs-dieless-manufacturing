@@ -1,15 +1,15 @@
 # Die vs. Dieless
 
-**Does frontier manufacturing technology let a business be profitable at a smaller scale?**
+**Does frontier manufacturing tech change the possible and optimal size of custom manufacturing businesses?**
 
-This is an interactive cost model for a one-employee business that sells custom, three-dimensional sheet-metal construction products, like formed facade panels, sculpted canopies and curved louvers. Every design is new, and each one sells only 1–10 units. The model compares two ways to make them:
+This is an interactive cost model for a one-employee business that sells custom, complex three-dimensional sheet-metal construction products, like formed facade panels, sculpted canopies and curved louvers(designs that would require a progressive die. Every design is new, and, being custom, each sells only 1–10 units. The model compares two ways to make them:
 
 - **Progressive / draw die:** a new die for every design, pressed at a host shop.
 - **Dieless robotic forming** ([Machina Labs RoboCraftsman](https://machinalabs.ai)): no die. The part is formed incrementally from a CAD toolpath.
 
 Every assumption is a slider. Moving one updates the average-cost (AC) and marginal-cost (MC) curves, the **minimum efficient scale** (where MC = AC), and the **break-even volume** (the fewest units a year that make the business profitable).
 
-Open `index.html` in a browser. There's no build step, no server and no dependencies. Google Fonts is optional.
+Open `index.html` in a browser. 
 
 ## Results at default assumptions (5 units per design, $9,000 per unit)
 
