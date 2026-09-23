@@ -1,0 +1,724 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Die vs. Dieless</title>
+<meta name="description" content="Minimum efficient scale and break-even volume for a custom 3-D sheet-metal construction shop: progressive dies versus Machina Labs dieless RoboForming.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500;62..125,700;62..125,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root{
+  --bg:#EEF1F3; --panel:#FFFFFF; --panel2:#F6F8F9; --ink:#141A1F; --ink2:#46535D; --muted:#76838D;
+  --line:#D5DCE1; --grid:#E6EBEE; --die:#C0661A; --mach:#2166AC; --accent:#2166AC; --pos:#2E7D4F; --neg:#B23A3A;
+  --display:"Archivo","Arial Narrow",Arial,sans-serif; --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111518; --panel:#181D21; --panel2:#1D2328; --ink:#E7EBEE; --ink2:#AEB8BF; --muted:#7E8A93;
+  --line:#2B3339; --grid:#232A30; --die:#D07A2E; --mach:#4A90D4; --accent:#4A90D4; --pos:#5DB283; --neg:#E07070; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#111518; --panel:#181D21; --panel2:#1D2328; --ink:#E7EBEE; --ink2:#AEB8BF; --muted:#7E8A93;
+  --line:#2B3339; --grid:#232A30; --die:#D07A2E; --mach:#4A90D4; --accent:#4A90D4; --pos:#5DB283; --neg:#E07070; color-scheme:dark;}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);margin:0}
+.wrap{max-width:1380px;margin:0 auto;padding-inline:20px;padding-block:28px 60px}
+header.top{display:grid;grid-template-columns:1fr auto;gap:12px 24px;align-items:end;border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:22px}
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+h1{font:800 clamp(34px,5.4vw,64px)/.92 var(--display);font-stretch:72%;letter-spacing:-.01em;margin:0;text-wrap:balance}
+h1 em{font-style:normal;font-stretch:125%;font-weight:500;letter-spacing:-.02em;color:var(--mach)}
+.lede{max-width:62ch;color:var(--ink2);margin:12px 0 0}
+.seg{display:inline-flex;border:1px solid var(--line);background:var(--panel);border-radius:6px;padding:3px;gap:3px}
+.seg button{font:500 13px/1.2 var(--body);border:0;background:transparent;color:var(--ink2);padding:8px 12px;border-radius:4px;cursor:pointer;text-align:left}
+.seg button small{display:block;font:400 11px/1.3 var(--mono);color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.seg button[aria-pressed="true"] small{color:var(--bg);opacity:.75}
+.seg button:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.layout{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:24px;align-items:start}
+@media (max-width:960px){.layout{grid-template-columns:1fr}.side{order:2}header.top{grid-template-columns:1fr}}
+/* sidebar */
+.side{background:var(--panel);border:1px solid var(--line);border-radius:8px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);max-height:calc(100vh - 24px);overflow:auto}
+@media (max-width:960px){.side{position:static;max-height:none}}
+.side-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:14px 16px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--panel);z-index:2}
+.side-head h2{font:700 15px/1.2 var(--display);font-stretch:90%;margin:0;text-transform:uppercase;letter-spacing:.04em}
+.btns{display:flex;gap:6px}
+.btn{font:500 12px/1 var(--body);border:1px solid var(--line);background:var(--panel2);color:var(--ink);padding:7px 10px;border-radius:4px;cursor:pointer}
+.btn:hover{border-color:var(--ink2)}
+details.grp{border-bottom:1px solid var(--line)}
+details.grp summary{cursor:pointer;list-style:none;padding:12px 16px;font:600 13px/1.2 var(--body);display:flex;justify-content:space-between;align-items:center}
+details.grp summary::-webkit-details-marker{display:none}
+details.grp summary::after{content:"+";font:400 16px/1 var(--mono);color:var(--muted)}
+details.grp[open] summary::after{content:"–"}
+details.grp summary .sc{font:500 11px/1 var(--mono);color:var(--muted);margin-left:8px;font-weight:400}
+.rows{padding:0 16px 14px;display:grid;gap:14px}
+.row label{display:flex;justify-content:space-between;gap:10px;font-size:13px;line-height:1.3;color:var(--ink)}
+.row label span.l{display:flex;gap:6px;align-items:baseline}
+.row output{font:500 13px/1.3 var(--mono);white-space:nowrap;font-variant-numeric:tabular-nums}
+.row output.changed{color:var(--accent)}
+.row .hint{font-size:11.5px;line-height:1.4;color:var(--muted);margin-top:3px}
+.chip{display:inline-block;width:8px;height:8px;border-radius:2px;flex:none;transform:translateY(-1px)}
+.chip.T{background:var(--die)}.chip.M{background:var(--mach)}
+input[type=range]{width:100%;margin:6px 0 0;accent-color:var(--accent);height:18px}
+/* main */
+.main{display:grid;gap:22px;min-width:0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:20px}
+.panel h2{font:700 20px/1.15 var(--display);font-stretch:85%;margin:0 0 4px;text-wrap:balance}
+.panel .sub{color:var(--ink2);font-size:13.5px;margin:0 0 14px;max-width:70ch}
+.verdict{font:500 clamp(19px,2.3vw,25px)/1.3 var(--body);margin:0;max-width:52ch;text-wrap:pretty}
+.verdict b{font-weight:600}
+.verdict .d{color:var(--die)} .verdict .m{color:var(--mach)}
+.cmp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-top:18px}
+@media (max-width:640px){.cmp{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.cell{background:var(--panel);padding:12px 14px;display:grid;gap:6px;align-content:start}
+.cell .k{font:500 11px/1.25 var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.cell .pair{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;align-items:baseline}
+.cell .pair .t{font:500 11px/1 var(--mono);display:flex;align-items:center;gap:5px;color:var(--ink2)}
+.cell .pair .v{font:700 22px/1.1 var(--display);font-stretch:80%;font-variant-numeric:tabular-nums;text-align:right}
+.cell .note{font-size:11.5px;color:var(--muted)}
+.chart-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.tabs{display:inline-flex;border:1px solid var(--line);border-radius:5px;overflow:hidden}
+.tabs button{font:500 12px/1 var(--body);background:var(--panel);color:var(--ink2);border:0;padding:8px 11px;cursor:pointer}
+.tabs button+button{border-left:1px solid var(--line)}
+.tabs button[aria-pressed="true"]{background:var(--panel2);color:var(--ink);box-shadow:inset 0 -2px 0 var(--accent)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink2);margin:10px 0 4px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:18px;height:0;border-top:2px solid}
+.sw.dash{border-top-style:dashed}
+.chart{position:relative;width:100%}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart svg text{font:11px var(--mono);fill:var(--muted)}
+.chart svg .lbl{font:600 11px var(--mono);paint-order:stroke;stroke:var(--panel);stroke-width:4px;stroke-linejoin:round}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font:12px/1.45 var(--mono);padding:8px 10px;border-radius:5px;white-space:nowrap;transform:translate(-50%,-110%);z-index:3;font-variant-numeric:tabular-nums}
+.tip b{font-weight:500;opacity:.7}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--grid);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{font:500 11px/1.3 var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--muted);border-bottom:1px solid var(--line);vertical-align:bottom}
+tbody td{font-family:var(--mono)}
+tbody td:first-child{font-family:var(--body)}
+tr.cur td{background:var(--panel2)}
+.bar{display:inline-block;height:8px;border-radius:0 3px 3px 0;vertical-align:middle;margin-right:8px}
+.vol{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px;font-size:13px;color:var(--ink2)}
+.vol input{width:220px;max-width:100%}
+.vol output{font:500 13px var(--mono);color:var(--ink)}
+.method{font-size:14px;color:var(--ink2)}
+.method h3{font:700 15px/1.2 var(--display);font-stretch:90%;color:var(--ink);margin:18px 0 6px;text-transform:uppercase;letter-spacing:.04em}
+.method p,.method li{max-width:72ch}
+.method code,.eq{font-family:var(--mono);font-size:12.5px}
+.eq{display:block;background:var(--panel2);border:1px solid var(--grid);padding:12px 14px;border-radius:5px;white-space:pre;overflow-x:auto;color:var(--ink);line-height:1.6}
+.method a{color:var(--accent)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:5px;font-size:13px;z-index:10}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="eyebrow">Minimum efficient scale · custom 3-D construction sheet metal</p>
+      <h1>Die vs. <em>Dieless</em></h1>
+      <p class="lede">How small can a one-employee custom sheet-metal business be and still make money? Compare a progressive-die route with Machina Labs’ dieless RoboForming when every design sells only a handful of units. Every number is a synthetic assumption; every slider changes it.</p>
+    </div>
+    <div class="seg" role="group" aria-label="Scenario">
+      <button type="button" id="sc-s1" data-s="s1" aria-pressed="true">Scenario 1<small>worst case for Machina</small></button>
+      <button type="button" id="sc-s2" data-s="s2" aria-pressed="false">Scenario 2<small>best case for Machina</small></button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="side" aria-label="Assumptions">
+      <div class="side-head">
+        <h2>Assumptions</h2>
+        <div class="btns">
+          <button type="button" class="btn" id="copy">Copy JSON</button>
+          <button type="button" class="btn" id="reset">Reset</button>
+        </div>
+      </div>
+      <div id="groups"></div>
+    </aside>
+
+    <main class="main">
+      <section class="panel" aria-live="polite">
+        <p class="eyebrow" id="scen-label">Scenario 1 · worst case for Machina</p>
+        <p class="verdict" id="verdict"></p>
+        <div class="cmp" id="cmp"></div>
+      </section>
+
+      <section class="panel">
+        <div class="chart-head">
+          <div>
+            <h2 id="c1-title">Where MC meets AC</h2>
+            <p class="sub" id="c1-sub"></p>
+          </div>
+          <div class="tabs" role="group" aria-label="Chart view">
+            <button type="button" id="v-curves" aria-pressed="true">Cost curves</button>
+            <button type="button" id="v-ratio" aria-pressed="false">MC / AC</button>
+          </div>
+        </div>
+        <div class="legend" id="lg1"></div>
+        <div class="chart" id="c1"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Break-even volume by batch size</h2>
+        <p class="sub">Units a year the shop must sell to cover all costs, if every custom design sold this many units. This is where heterogeneity bites: the die is paid once per design, not once per business.</p>
+        <div class="legend"><span><i class="chip T"></i>Progressive die</span><span><i class="chip M"></i>Machina</span><span style="color:var(--muted)">∞ = not profitable at any volume</span></div>
+        <div class="chart" id="c2"></div>
+      </section>
+
+      <section class="panel">
+        <h2>All four cases</h2>
+        <p class="sub">Both scenarios at the current assumptions. Designs per year = units ÷ batch size.</p>
+        <div class="tbl-wrap"><table id="t4"></table></div>
+      </section>
+
+      <section class="panel">
+        <h2>What a unit costs, line by line</h2>
+        <div class="vol"><label for="volq">Evaluate at</label><input type="range" id="volq" min="10" max="1000" step="5" value="150"><output id="volq-o"></output></div>
+        <div class="tbl-wrap"><table id="tb"></table></div>
+      </section>
+
+      <section class="panel method">
+        <h2>How the model works</h2>
+        <p>A one-employee shop sells custom, three-dimensional sheet-metal construction products (formed facade panels, sculpted canopies, curved louvers). Each order is a new design. Every design is built in a batch of <i>n</i> units. <code>Q</code> is units sold per year and <code>D = Q / n</code> is designs won per year.</p>
+        <span class="eq">TC(Q) = Fixed + Acquisition(L) + Labor(H) + D·c_design + Q·c_unit
+
+w  = w₀ · 0.5^(lead weeks / half-life)       win rate falls with lead time
+L  = D / w                                  qualified leads needed
+Acquisition(L) = c_L · [L + Lₛ/(γ+1) · (L/Lₛ)^(γ+1)]   marginal lead cost c_L·(1 + (L/Lₛ)^γ)
+H  = L·h_quote + D·(h_design + h_coord) + Q·h_unit
+Labor(H) = salary + max(0, H − capacity) · (salary / capacity) · premium
+
+AC = TC / Q      MC = dTC/dQ      MES = argmin AC  ⇔  MC = AC</span>
+        <h3>Why the AC curve turns up</h3>
+        <p>With only fixed and constant per-unit costs, average cost falls forever and MC never meets AC. Two real constraints of a small custom shop bend it back up. <b>Labor:</b> the single employee runs out of hours, and overflow work costs a contractor premium. <b>Local demand:</b> custom construction work comes from a thin regional market, so each extra lead costs more than the last. Slow lead times make both worse. A lower win rate means more quotes, more unpaid customer hours and more marketing per order.</p>
+        <h3>Reading the results</h3>
+        <ul>
+          <li><b>Break-even</b> is the minimum viable scale: the smallest yearly volume where price covers average cost. It answers “how small can the business be?”</li>
+          <li><b>MES (MC = AC)</b> is the bottom of the AC curve. With default assumptions it sits where the employee’s hours run out. For a one-person shop, the person sets the MES, not the machine.</li>
+          <li><b>Cost penalty at ½ MES</b> is the classic industrial-organization measure of how much it hurts to be half the efficient size.</li>
+          <li><b>Die route:</b> per-design costs are the die, its engineering, tryout, expected rework after design changes, storage, inspection, press setup and the financing of the die until the customer pays. <b>Machina route:</b> per-design costs are programming/first article, its financing and evaluation trips.</li>
+        </ul>
+        <h3>Where the synthetic numbers come from</h3>
+        <ul>
+          <li>Die cost: mid-complexity progressive dies commonly quote $15k–50k; complex multi-stage dies run $25k–150k+ (<a href="https://www.jennisoncorp.com/post/sheet-metal-stamping-costs-explained-what-really-drives-the-price" target="_blank" rel="noopener">Jennison</a>, <a href="https://www.ml-hardware.com/news/industry-news/how-much-to-get-a-metal-part-made-the-complete.html" target="_blank" rel="noopener">ML Hardware</a>).</li>
+          <li>Hidden die NRE: design engineering $3–5k, tryout $2–5k, storage $0–2k/yr (<a href="https://drametal.com/blog/sheet-metal-tooling-cost-guide/" target="_blank" rel="noopener">DRA Metal</a>).</li>
+          <li>Machina: dieless forming moves lead time from months to days and removes die cost per design (<a href="https://machinalabs.ai/resources/advanced-manufacturing-incremental-sheet-metal-forming-with-robotics-and-ai" target="_blank" rel="noopener">Machina Labs</a>). Machina does not publish part pricing. Cell rate, robot hours and programming fees here are assumptions to argue with.</li>
+          <li>Incremental forming trades tooling cost for cycle time: cheaper for small batches, slower per part (<a href="https://robodk.com/blog/robotic-incremental-forming-savings/" target="_blank" rel="noopener">RoboDK</a>).</li>
+        </ul>
+        <h3>Limits</h3>
+        <p>Large facade panels are more often drawn in line or transfer dies than in progressive dies. The die cost slider covers either. The model ignores installation, taxes and capacity limits at Machina, and prices are held fixed rather than competed down. The profit-maximizing volume assumes overflow contractors are available without limit at the premium and that price holds. In practice, a shop with this cost advantage would cut price or see competitors adopt the same process, pulling price toward the dieless average cost.</p>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+/* Die vs. Dieless — cost model
+ * A small shop sells custom, 3-D sheet-metal construction products.
+ * Every design is a new "instance"; each instance is built in a batch of n units.
+ * Q = units sold per year, D = Q / n designs won per year.
+ *
+ * TC(Q) = Fixed + Acquisition(L) + Labor(H) + D·c_design + Q·c_unit
+ *   L  = D / w                          qualified leads needed (w = win rate)
+ *   w  = w0 · 0.5^(lead weeks / half-life)   slow lead times lose deals
+ *   Acquisition(L) = cL · (L + Ls/(γ+1)·(L/Ls)^(γ+1))   marginal lead cost cL·(1+(L/Ls)^γ)
+ *   H  = L·h_quote + D·(h_design + h_coord) + Q·h_unit
+ *   Labor(H) = salary + max(0, H − capacity) · (salary/capacity) · premium
+ * AC = TC/Q, MC = dTC/dQ. MES = argmin AC (where MC = AC).
+ */
+(function (root) {
+  const P = [
+    // ---- Market & demand ----
+    { id: 'price', g: 'Market & demand', label: 'Price per unit', unit: '$', min: 1000, max: 25000, step: 250, def: 9000, tech: 'both',
+      hint: 'What a GC or architect pays per custom formed panel, uninstalled. Bespoke formed facade metal runs roughly $150–400/ft²; a 4×8 ft panel ≈ $4.8k–12.8k.' },
+    { id: 'n', g: 'Market & demand', label: 'Units per design (batch size)', unit: '', min: 1, max: 25, step: 1, def: 5, tech: 'both',
+      hint: 'How many identical units each custom design sells. Your stated range is 1–10.' },
+    { id: 'leadCost', g: 'Market & demand', label: 'Marketing cost per qualified lead', unit: '$', min: 0, max: 3000, step: 25, def: 400, tech: 'both',
+      hint: 'Ads, trade-show share, bid-board fees, sample parts — per architect/GC who asks for a quote.' },
+    { id: 'winBase', g: 'Market & demand', label: 'Win rate if delivery were instant', unit: '%', min: 5, max: 95, step: 1, def: 45, tech: 'both',
+      hint: 'Share of quotes that become orders before lead time is considered.' },
+    { id: 'halfLife', g: 'Market & demand', label: 'Weeks of lead time that halve the win rate', unit: 'wk', min: 1, max: 40, step: 1, def: 8, tech: 'both',
+      hint: 'Construction schedules punish slow suppliers. At 8 wk, an 8-week die lead time wins half as many jobs as instant delivery.' },
+    { id: 'leadSat', g: 'Market & demand', label: 'Local market depth (leads/yr before lead cost doubles)', unit: '', min: 20, max: 2000, step: 10, def: 200, tech: 'both',
+      hint: 'Custom construction demand is local and thin. Past this many leads a year, each extra lead costs twice as much — the demand-side source of rising marginal cost.' },
+    { id: 'gamma', g: 'Market & demand', label: 'Market saturation curvature', unit: 'x', min: 1, max: 4, step: 0.5, def: 3, tech: 'both',
+      hint: 'How sharply lead cost climbs past market depth. 1 = linear, 4 = a wall.' },
+    { id: 'fixMkt', g: 'Market & demand', label: 'Base marketing (annual)', unit: '$', min: 0, max: 100000, step: 1000, def: 15000, tech: 'both',
+      hint: 'Website, portfolio photography, AIA/CSI memberships — spent regardless of volume.' },
+
+    // ---- Labor & overhead ----
+    { id: 'salary', g: 'Labor & overhead', label: 'The one employee, fully loaded', unit: '$', min: 30000, max: 200000, step: 1000, def: 85000, tech: 'both',
+      hint: 'Salary + payroll tax + benefits for the single designer/estimator/PM.' },
+    { id: 'hrsCap', g: 'Labor & overhead', label: 'Productive hours per year', unit: 'hr', min: 1000, max: 2600, step: 50, def: 1900, tech: 'both',
+      hint: 'Past this, work goes to contractors at a premium — the labor source of rising marginal cost.' },
+    { id: 'premium', g: 'Labor & overhead', label: 'Contract labor premium', unit: 'x', min: 1, max: 3, step: 0.05, def: 1.5, tech: 'both',
+      hint: 'Multiple of the employee’s hourly cost paid for overflow hours.' },
+    { id: 'hrsQuote', g: 'Labor & overhead', label: 'Hours per quote (won or lost)', unit: 'hr', min: 0, max: 20, step: 0.5, def: 3, tech: 'both',
+      hint: 'Time spent with customers who may not buy. Lower win rates multiply this.' },
+    { id: 'hrsDesignT', g: 'Labor & overhead', label: 'Design/DFM hours per design — die', unit: 'hr', min: 0, max: 80, step: 1, def: 16, tech: 'T',
+      hint: 'Geometry has to be made die-formable: draw depth, addendum, springback allowance.' },
+    { id: 'hrsDesignM', g: 'Labor & overhead', label: 'Design hours per design — Machina', unit: 'hr', min: 0, max: 80, step: 1, def: 10, tech: 'M',
+      hint: 'Fewer formability constraints; CAD goes straight to toolpath.' },
+    { id: 'hrsUnit', g: 'Labor & overhead', label: 'Hours per unit (handling, QC, install coordination)', unit: 'hr', min: 0, max: 10, step: 0.25, def: 2, tech: 'both', hint: '' },
+    { id: 'fixOH', g: 'Labor & overhead', label: 'Overhead (annual)', unit: '$', min: 0, max: 150000, step: 1000, def: 30000, tech: 'both',
+      hint: 'Insurance, CAD/CAM seats, small office, accounting, legal.' },
+    { id: 'rate', g: 'Labor & overhead', label: 'Cost of capital', unit: '%', min: 0, max: 30, step: 0.5, def: 10, tech: 'both',
+      hint: 'Applied to per-design outlays (dies, programming fees) from order until the customer pays.' },
+    { id: 'payTerms', g: 'Labor & overhead', label: 'Customer payment terms after delivery', unit: 'wk', min: 0, max: 16, step: 1, def: 6, tech: 'both',
+      hint: 'Net-30 to net-60 is normal in construction; retainage stretches it further.' },
+
+    // ---- Material ----
+    { id: 'netMat', g: 'Material', label: 'Steel in the finished part', unit: '$', min: 20, max: 1500, step: 10, def: 180, tech: 'both',
+      hint: '4×8 ft of 10-ga A1011 ≈ 180 lb; ~$1/lb cut-to-size delivered (synthetic).' },
+    { id: 'utilT', g: 'Material', label: 'Material utilization — die', unit: '%', min: 30, max: 100, step: 1, def: 72, tech: 'T',
+      hint: 'Binder/addendum trimmed off after the draw.' },
+    { id: 'utilM', g: 'Material', label: 'Material utilization — Machina', unit: '%', min: 30, max: 100, step: 1, def: 62, tech: 'M',
+      hint: 'Incremental forming clamps the sheet in a frame; the border is scrap.' },
+
+    // ---- Die route ----
+    { id: 'dieCost', g: 'Die route', label: 'Die build cost per design', unit: '$', min: 3000, max: 250000, step: 1000, def: 25000, tech: 'T',
+      hint: 'Mid-complexity progressive/draw dies usually quote $15k–50k; complex multi-stage dies $25k–150k+.' },
+    { id: 'dieEng', g: 'Die route', label: 'Die design engineering', unit: '$', min: 0, max: 30000, step: 500, def: 4000, tech: 'T',
+      hint: 'Often left out of the die quote ($3–5k typical).' },
+    { id: 'tryout', g: 'Die route', label: 'Tryout & first article', unit: '$', min: 0, max: 30000, step: 500, def: 3000, tech: 'T',
+      hint: 'Tryout blanks, press time, adjustments ($2–5k typical).' },
+    { id: 'changeProb', g: 'Die route', label: 'Chance the customer changes the design after die cut', unit: '%', min: 0, max: 80, step: 1, def: 20, tech: 'T',
+      hint: 'Architects revise. A die can’t absorb it cheaply; a toolpath can.' },
+    { id: 'changeCost', g: 'Die route', label: 'Die rework cost when that happens', unit: '%', min: 0, max: 100, step: 5, def: 30, tech: 'T', hint: 'Share of die build cost.' },
+    { id: 'dieStore', g: 'Die route', label: 'Die storage / disposal per die', unit: '$', min: 0, max: 5000, step: 50, def: 250, tech: 'T',
+      hint: 'One-off dies get stored “just in case” or scrapped. Either costs money.' },
+    { id: 'inspectT', g: 'Die route', label: 'CMM inspection per design', unit: '$', min: 0, max: 5000, step: 50, def: 600, tech: 'T',
+      hint: 'Machina scans in-cell; the die route pays for separate first-article inspection.' },
+    { id: 'setupHrs', g: 'Die route', label: 'Press setup hours per job', unit: 'hr', min: 0, max: 16, step: 0.5, def: 3, tech: 'T', hint: '' },
+    { id: 'runHrs', g: 'Die route', label: 'Press hours per unit', unit: 'hr', min: 0.02, max: 3, step: 0.02, def: 0.3, tech: 'T',
+      hint: 'Large panels, multiple hits, manual handling.' },
+    { id: 'trimT', g: 'Die route', label: 'Secondary trim & pierce per unit', unit: '$', min: 0, max: 1000, step: 10, def: 150, tech: 'T',
+      hint: '5-axis laser trim or hand trim after drawing.' },
+
+    // ---- Machina route ----
+    { id: 'mNRE', g: 'Machina route', label: 'Programming & first article per design', unit: '$', min: 0, max: 20000, step: 250, def: 3500, tech: 'M',
+      hint: 'Toolpath generation, frame setup, first-part scan. Synthetic — Machina does not publish pricing.' },
+    { id: 'mHrs', g: 'Machina route', label: 'Robot hours per unit (form + scan + trim)', unit: 'hr', min: 0.5, max: 30, step: 0.5, def: 6, tech: 'M',
+      hint: 'Incremental forming is slow: a large, deep 3-D part can take hours.' },
+    { id: 'mRate', g: 'Machina route', label: 'Machina cell rate', unit: '$', min: 50, max: 1000, step: 10, def: 300, tech: 'M',
+      hint: 'Per robot-hour, including Machina’s margin. Synthetic.' },
+    { id: 'finishM', g: 'Machina route', label: 'Surface finishing per unit', unit: '$', min: 0, max: 1000, step: 10, def: 120, tech: 'M',
+      hint: 'Architectural finishes may need tool-path marks sanded before coating.' },
+    { id: 'trimM', g: 'Machina route', label: 'Residual deburr per unit', unit: '$', min: 0, max: 500, step: 5, def: 25, tech: 'M',
+      hint: 'Trimming and drilling happen in the same cell.' },
+
+    // ---- Logistics (shared rates) ----
+    { id: 'shipBase', g: 'Logistics', label: 'Handling per shipped unit', unit: '$', min: 0, max: 500, step: 5, def: 60, tech: 'both', hint: '' },
+    { id: 'freight', g: 'Logistics', label: 'Freight per unit-mile', unit: '$', min: 0.05, max: 2, step: 0.01, def: 0.35, tech: 'both',
+      hint: 'Oversize crated panel moving LTL.' },
+
+    // ---- Scenario-specific ----
+    { id: 'milesT', g: 'Scenario', label: 'Miles: die host → customer', unit: 'mi', min: 0, max: 3000, step: 5, def: { s1: 25, s2: 60 }, tech: 'T', hint: '' },
+    { id: 'milesM', g: 'Scenario', label: 'Miles: Machina factory → customer', unit: 'mi', min: 0, max: 3000, step: 10, def: { s1: 1800, s2: 150 }, tech: 'M',
+      hint: 'Worst case: shipped from the LA-area factory. Best case: a forward-deployed cell nearby.' },
+    { id: 'crateT', g: 'Scenario', label: 'Crating per unit — die', unit: '$', min: 0, max: 600, step: 10, def: { s1: 0, s2: 0 }, tech: 'T', hint: 'Local truck delivery needs none.' },
+    { id: 'crateM', g: 'Scenario', label: 'Crating per unit — Machina', unit: '$', min: 0, max: 600, step: 10, def: { s1: 150, s2: 40 }, tech: 'M', hint: '' },
+    { id: 'leadT', g: 'Scenario', label: 'Lead time to customer — die', unit: 'wk', min: 1, max: 30, step: 0.5, def: { s1: 8, s2: 9 }, tech: 'T',
+      hint: 'Die design + build + tryout + run.' },
+    { id: 'leadM', g: 'Scenario', label: 'Lead time to customer — Machina', unit: 'wk', min: 0.5, max: 30, step: 0.5, def: { s1: 3, s2: 1.5 }, tech: 'M',
+      hint: 'Worst case adds freight transit, a queue behind defense work, and remote back-and-forth.' },
+    { id: 'coordT', g: 'Scenario', label: 'Supplier coordination hours per design — die', unit: 'hr', min: 0, max: 40, step: 0.5, def: { s1: 2, s2: 5 }, tech: 'T',
+      hint: 'Trips to the die shop and press host.' },
+    { id: 'coordM', g: 'Scenario', label: 'Supplier coordination hours per design — Machina', unit: 'hr', min: 0, max: 40, step: 0.5, def: { s1: 6, s2: 2 }, tech: 'M',
+      hint: 'Communication delay: time zones, remote reviews, waiting on scans.' },
+    { id: 'tripsM', g: 'Scenario', label: 'Evaluation trips to Machina per design', unit: '', min: 0, max: 2, step: 0.05, def: { s1: 0.25, s2: 0.25 }, tech: 'M',
+      hint: '0.25 = one visit every fourth design, to inspect first articles in person.' },
+    { id: 'tripCost', g: 'Scenario', label: 'Cost per evaluation trip', unit: '$', min: 0, max: 5000, step: 50, def: { s1: 1800, s2: 200 }, tech: 'M',
+      hint: 'Flight + hotel + a lost day, versus a short drive.' },
+    { id: 'dieMove', g: 'Scenario', label: 'Die transport per design', unit: '$', min: 0, max: 3000, step: 50, def: { s1: 0, s2: 300 }, tech: 'T',
+      hint: 'Trucking a heavy die to a press host an hour away.' },
+    { id: 'pressRate', g: 'Scenario', label: 'Press host rate', unit: '$', min: 50, max: 600, step: 5, def: { s1: 175, s2: 175 }, tech: 'T',
+      hint: 'Per press-hour at the shop hosting your die.' },
+    { id: 'pressOwn', g: 'Scenario', label: 'Owned press (annual lease + upkeep)', unit: '$', min: 0, max: 250000, step: 5000, def: { s1: 0, s2: 0 }, tech: 'T',
+      hint: 'Set above 0 to model owning the press instead of renting a host’s. Pair with a lower press rate.' },
+    { id: 'supplierM', g: 'Scenario', label: 'Supplier onboarding & audits (annual) — Machina', unit: '$', min: 0, max: 50000, step: 500, def: { s1: 6000, s2: 3000 }, tech: 'M',
+      hint: 'NDAs, quality audits, a new vendor’s paperwork.' },
+  ];
+
+  function defaults() {
+    const v = {};
+    for (const p of P) v[p.id] = typeof p.def === 'object' ? { ...p.def } : p.def;
+    return v;
+  }
+  function get(v, id, scen) { const x = v[id]; return typeof x === 'object' ? x[scen] : x; }
+
+  // Build cost functions for one technology in one scenario.
+  function build(v, scen, tech) {
+    const g = (id) => get(v, id, scen);
+    const n = g('n');
+    const lead = tech === 'T' ? g('leadT') : g('leadM');
+    const w = (g('winBase') / 100) * Math.pow(0.5, lead / g('halfLife'));
+    const cL = g('leadCost'), Ls = g('leadSat'), gam = g('gamma');
+    const wage = g('salary') / g('hrsCap');
+    const fin = (x) => x * (g('rate') / 100) * (lead + g('payTerms')) / 52;
+    let perDesign, perDesignLog, perUnit, fixed, hDesign;
+    const ship = g('shipBase') + g('freight') * (tech === 'T' ? g('milesT') : g('milesM')) + (tech === 'T' ? g('crateT') : g('crateM'));
+    if (tech === 'T') {
+      const die = g('dieCost');
+      perDesign = die + g('dieEng') + g('tryout') + (g('changeProb') / 100) * (g('changeCost') / 100) * die
+        + g('dieStore') + g('inspectT') + g('setupHrs') * g('pressRate') + fin(die + g('dieEng') + g('tryout'));
+      perDesignLog = g('dieMove');
+      perUnit = { material: g('netMat') / (g('utilT') / 100), process: g('runHrs') * g('pressRate'), finishing: g('trimT'), logistics: ship };
+      fixed = g('fixMkt') + g('fixOH') + g('pressOwn');
+      hDesign = g('hrsDesignT') + g('coordT');
+    } else {
+      perDesign = g('mNRE') + fin(g('mNRE'));
+      perDesignLog = g('tripsM') * g('tripCost');
+      perUnit = { material: g('netMat') / (g('utilM') / 100), process: g('mHrs') * g('mRate'), finishing: g('finishM') + g('trimM'), logistics: ship };
+      fixed = g('fixMkt') + g('fixOH') + g('supplierM');
+      hDesign = g('hrsDesignM') + g('coordM');
+    }
+    function parts(Q) {
+      const D = Q / n, L = D / w;
+      const acq = cL * (L + (Ls / (gam + 1)) * Math.pow(L / Ls, gam + 1));
+      const H = L * g('hrsQuote') + D * hDesign + Q * g('hrsUnit');
+      const labor = g('salary') + Math.max(0, H - g('hrsCap')) * wage * g('premium');
+      return {
+        tooling: D * perDesign,
+        acquisition: acq,
+        labor,
+        material: Q * perUnit.material,
+        process: Q * perUnit.process,
+        finishing: Q * perUnit.finishing,
+        logistics: Q * perUnit.logistics + D * perDesignLog,
+        fixed,
+        _H: H, _L: L, _D: D,
+      };
+    }
+    const TC = (Q) => { const p = parts(Q); return p.tooling + p.acquisition + p.labor + p.material + p.process + p.finishing + p.logistics + p.fixed; };
+    // Q at which the single employee's hours run out
+    let lo = 0, hi = 1e6;
+    if (parts(hi)._H < g('hrsCap')) lo = hi;
+    for (let i = 0; i < 80 && hi - lo > 0.01; i++) { const m = (lo + hi) / 2; (parts(m)._H < g('hrsCap') ? (lo = m) : (hi = m)); }
+    return { TC, parts, w, lead, n, price: g('price'), capQ: lo, perDesign: perDesign + perDesignLog, perUnit };
+  }
+
+  const QMAX = 8000;
+  function analyze(m) {
+    const P0 = m.price;
+    const AC = (Q) => m.TC(Q) / Q;
+    const MC = (Q) => { const h = Math.max(0.05, Q * 1e-4); return (m.TC(Q + h) - m.TC(Q - h)) / (2 * h); };
+    const prof = (Q) => P0 * Q - m.TC(Q);
+    // grid
+    const N = 2500; let best = Infinity, bestQ = 1, pmax = -Infinity, pQ = 0;
+    const grid = [];
+    for (let i = 1; i <= N; i++) { const Q = QMAX * Math.pow(i / N, 2); grid.push(Q); }
+    let be = null, beHi = null;
+    for (let i = 0; i < grid.length; i++) {
+      const Q = grid[i]; const a = AC(Q); if (a < best) { best = a; bestQ = Q; }
+      const p = prof(Q); if (p > pmax) { pmax = p; pQ = Q; }
+      if (i > 0) {
+        const p0 = prof(grid[i - 1]);
+        if (be === null && p0 < 0 && p >= 0) be = bis(prof, grid[i - 1], Q);
+        if (be !== null && beHi === null && p0 >= 0 && p < 0) beHi = bis(prof, grid[i - 1], Q);
+      }
+    }
+    if (be === null && prof(grid[0]) >= 0) be = grid[0];
+    // refine MES with golden section around bestQ
+    let a = Math.max(0.5, bestQ * 0.8), b = Math.min(QMAX, bestQ * 1.25);
+    for (let k = 0; k < 60; k++) { const c = a + (b - a) * 0.382, d = a + (b - a) * 0.618; (AC(c) < AC(d) ? (b = d) : (a = c)); }
+    const mes = (a + b) / 2; const acMin = AC(mes);
+    const atEdge = mes > QMAX * 0.98;
+    return {
+      AC, MC, prof, mes, acMin, atEdge,
+      penaltyHalf: AC(mes / 2) / acMin - 1,
+      be, beHi, profitable: be !== null,
+      qStar: pQ, piStar: pmax,
+    };
+  }
+  function bis(f, a, b) { for (let i = 0; i < 60; i++) { const m = (a + b) / 2; (Math.sign(f(m)) === Math.sign(f(a)) ? (a = m) : (b = m)); } return (a + b) / 2; }
+
+  const api = { PARAMS: P, defaults, get, build, analyze, QMAX };
+  if (typeof module !== 'undefined') module.exports = api; else root.MESModel = api;
+})(this);
+
+</script>
+<script>
+(function(){
+const M = window.MESModel, PARAMS = M.PARAMS;
+const SC = { s1:'Scenario 1 · worst case for Machina', s2:'Scenario 2 · best case for Machina' };
+let v = M.defaults(), scen = 's1', view = 'curves';
+try { const s = JSON.parse(localStorage.getItem('dvd-state')||'null'); if (s && s.v) { for (const k in s.v) if (k in v) v[k] = s.v[k]; scen = s.scen || scen; } } catch(e){}
+const save = () => { try { localStorage.setItem('dvd-state', JSON.stringify({v, scen})); } catch(e){} };
+
+const dec = (step) => { const s = String(step); return s.includes('.') ? s.split('.')[1].length : 0; };
+function fmtP(p, x){
+  const d = dec(p.step);
+  if (p.unit === '$') return '$' + x.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+  if (p.unit === '%') return x + '%';
+  if (p.unit === 'x') return x.toFixed(Math.max(1,d)) + '×';
+  if (p.unit === 'wk') return x + ' wk';
+  if (p.unit === 'hr') return x + ' hr';
+  if (p.unit === 'mi') return x.toLocaleString('en-US') + ' mi';
+  return x.toLocaleString('en-US',{maximumFractionDigits:d});
+}
+const $ = (x) => '$' + Math.round(x).toLocaleString('en-US');
+const int = (x) => Math.round(x).toLocaleString('en-US');
+const el = (id) => document.getElementById(id);
+
+/* ---------- sliders ---------- */
+const DEF = M.defaults();
+function buildGroups(){
+  const groups = {};
+  PARAMS.forEach(p => (groups[p.g] = groups[p.g] || []).push(p));
+  const open = ['Market & demand','Scenario'];
+  const html = Object.entries(groups).map(([g, ps]) => `
+    <details class="grp" ${open.includes(g)?'open':''}>
+      <summary>${g === 'Scenario' ? 'Scenario settings' : g}${g==='Scenario'?'<span class="sc" id="sc-tag"></span>':''}</summary>
+      <div class="rows">${ps.map(p => `
+        <div class="row">
+          <label for="p-${p.id}"><span class="l">${p.tech!=='both'?`<i class="chip ${p.tech}" aria-hidden="true"></i>`:''}${p.label}</span><output id="o-${p.id}" for="p-${p.id}"></output></label>
+          <input type="range" id="p-${p.id}" min="${p.min}" max="${p.max}" step="${p.step}">
+          ${p.hint?`<div class="hint">${p.hint}</div>`:''}
+        </div>`).join('')}</div>
+    </details>`).join('');
+  el('groups').innerHTML = html;
+  PARAMS.forEach(p => {
+    el('p-'+p.id).addEventListener('input', e => {
+      const x = parseFloat(e.target.value);
+      if (typeof v[p.id] === 'object') v[p.id][scen] = x; else v[p.id] = x;
+      syncOut(p); schedule();
+    });
+  });
+}
+function syncOut(p){
+  const x = M.get(v, p.id, scen), d = M.get(DEF, p.id, scen);
+  const o = el('o-'+p.id); o.textContent = fmtP(p, x); o.classList.toggle('changed', x !== d);
+}
+function syncSliders(){
+  PARAMS.forEach(p => { el('p-'+p.id).value = M.get(v, p.id, scen); syncOut(p); });
+  el('sc-tag').textContent = scen === 's1' ? '· Scenario 1' : '· Scenario 2';
+}
+
+/* ---------- compute ---------- */
+function runAll(){
+  const r = {};
+  for (const s of ['s1','s2']) for (const t of ['T','M']) { const m = M.build(v, s, t); r[s+t] = { m, a: M.analyze(m) }; }
+  return r;
+}
+
+/* ---------- headline ---------- */
+function renderHead(R){
+  const T = R[scen+'T'], Mm = R[scen+'M'], n = M.get(v,'n',scen);
+  el('scen-label').textContent = SC[scen];
+  const be = (x) => x.a.profitable ? int(x.a.be) : null;
+  let s;
+  const bT = be(T), bM = be(Mm);
+  if (bT && bM) {
+    const ratio = T.a.be / Mm.a.be;
+    s = `Selling ${n}-unit custom designs, a die-based shop breaks even at <b class="d">${bT} units a year</b> (${int(T.a.be/n)} designs). With Machina it breaks even at <b class="m">${bM}</b> (${int(Mm.a.be/n)} designs)${ratio>=1.05?`: <b>${ratio.toFixed(1)}× smaller</b>`:ratio<=0.95?`, so the die route is <b>${(1/ratio).toFixed(1)}× smaller</b> here`:', about the same'}.`;
+  } else if (!bT && bM) {
+    s = `Selling ${n}-unit custom designs, a die-based shop <b class="d">never breaks even</b>: the die eats the margin on every job. With Machina it breaks even at <b class="m">${bM} units a year</b> (${int(Mm.a.be/n)} designs).`;
+  } else if (bT && !bM) {
+    s = `Here the die route breaks even at <b class="d">${bT} units a year</b>, and the Machina route <b class="m">never does</b>. Robot time, freight or programming fees cost more than the dies save.`;
+  } else {
+    s = `At a price of ${$(M.get(v,'price',scen))}, <b>neither route breaks even</b> with ${n}-unit designs. Raise the price or the batch size.`;
+  }
+  el('verdict').innerHTML = s;
+  const cell = (k, fT, fM, note) => `<div class="cell"><div class="k">${k}</div><div class="pair"><span class="t"><i class="chip T"></i>Die</span><span class="v">${fT}</span><span class="t"><i class="chip M"></i>Machina</span><span class="v">${fM}</span></div>${note?`<div class="note">${note}</div>`:''}</div>`;
+  const mesTxt = (x) => x.a.atEdge ? '> '+int(M.QMAX) : int(x.a.mes);
+  el('cmp').innerHTML =
+    cell('Break-even, units/yr', bT||'∞', bM||'∞', 'Minimum viable scale') +
+    cell('MES, units/yr (MC = AC)', mesTxt(T), mesTxt(Mm), 'Bottom of the AC curve') +
+    cell('Lowest average cost', $(T.a.acMin), $(Mm.a.acMin), 'Per unit, at MES') +
+    cell('Win rate on quotes', Math.round(T.m.w*100)+'%', Math.round(Mm.m.w*100)+'%', `At ${T.m.lead} vs ${Mm.m.lead} wk lead time`);
+}
+
+/* ---------- chart 1 ---------- */
+const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function nice(x){ const e = Math.pow(10, Math.floor(Math.log10(x))); const f = x/e; return (f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10)*e; }
+function ticks(max, target){ const step = nice(max/target); const t=[]; for(let x=0;x<=max+1e-9;x+=step) t.push(x); return t; }
+function kfmt(x){ return x>=1000 ? '$'+(x/1000).toLocaleString('en-US',{maximumFractionDigits:1})+'k' : '$'+Math.round(x); }
+
+function renderC1(R){
+  const T = R[scen+'T'], Mm = R[scen+'M'], price = M.get(v,'price',scen);
+  const box = el('c1'); const W = Math.max(320, box.clientWidth), H = Math.round(Math.min(420, Math.max(280, W*0.52)));
+  const pad = {l:58, r:18, t:16, b:40};
+  const cand = [T.a.mes, Mm.a.mes, T.a.be||0, Mm.a.be||0].filter(x=>x && x < M.QMAX*0.98);
+  const xmax = nice(Math.min(M.QMAX, Math.max(60, 1.6*Math.max(...cand, 40))));
+  const iw = W-pad.l-pad.r, ih = H-pad.t-pad.b;
+  const X = (q) => pad.l + q/xmax*iw;
+  const series = [
+    {k:'T', col:css('--die'), a:T.a}, {k:'M', col:css('--mach'), a:Mm.a}
+  ];
+  let ymax, Y, yt, yf;
+  const N = 260, qs = []; for (let i=1;i<=N;i++) qs.push(xmax*i/N);
+  if (view === 'curves') {
+    ymax = nice(Math.max(price*1.5, T.a.acMin*1.6, Mm.a.acMin*1.6));
+    yt = ticks(ymax, 5); yf = kfmt;
+  } else {
+    ymax = 2; yt = [0,0.5,1,1.5,2]; yf = (x)=>x.toFixed(1)+'×';
+  }
+  Y = (y) => pad.t + ih - Math.min(Math.max(y,0), ymax*1.02)/ymax*ih;
+  const path = (f) => qs.map((q,i)=>{ const y=f(q); return (i?'L':'M')+X(q).toFixed(1)+' '+Y(y).toFixed(1); }).join('');
+  let g = '';
+  g += `<defs><clipPath id="clip1"><rect x="${pad.l}" y="${pad.t}" width="${iw}" height="${ih}"/></clipPath></defs>`;
+  yt.forEach(y => { g += `<line x1="${pad.l}" x2="${W-pad.r}" y1="${Y(y)}" y2="${Y(y)}" stroke="${css('--grid')}" stroke-width="1"/><text x="${pad.l-8}" y="${Y(y)+4}" text-anchor="end">${yf(y)}</text>`; });
+  ticks(xmax, W<520?4:7).forEach(x => { g += `<text x="${X(x)}" y="${H-pad.b+18}" text-anchor="middle">${int(x)}</text>`; });
+  g += `<text x="${pad.l+iw/2}" y="${H-4}" text-anchor="middle">Units sold per year</text>`;
+  g += `<line x1="${pad.l}" x2="${W-pad.r}" y1="${pad.t+ih}" y2="${pad.t+ih}" stroke="${css('--ink2')}" stroke-width="1"/>`;
+  g += `<g clip-path="url(#clip1)">`;
+  if (view === 'curves') {
+    g += `<line x1="${pad.l}" x2="${W-pad.r}" y1="${Y(price)}" y2="${Y(price)}" stroke="${css('--ink')}" stroke-width="1.25"/>`;
+    series.forEach(s => {
+      g += `<path d="${path(s.a.MC)}" fill="none" stroke="${s.col}" stroke-width="2" stroke-dasharray="5 4" opacity=".85"/>`;
+      g += `<path d="${path(s.a.AC)}" fill="none" stroke="${s.col}" stroke-width="2.25"/>`;
+    });
+  } else {
+    g += `<line x1="${pad.l}" x2="${W-pad.r}" y1="${Y(1)}" y2="${Y(1)}" stroke="${css('--ink')}" stroke-width="1.25"/>`;
+    series.forEach(s => { g += `<path d="${path(q=>s.a.MC(q)/s.a.AC(q))}" fill="none" stroke="${s.col}" stroke-width="2.25"/>`; });
+  }
+  g += `</g>`;
+  // markers
+  const lab = [];
+  series.forEach((s,i) => {
+    if (!s.a.atEdge && s.a.mes <= xmax) {
+      const y = view==='curves' ? s.a.acMin : 1;
+      g += `<circle cx="${X(s.a.mes)}" cy="${Y(y)}" r="5" fill="${s.col}" stroke="${css('--panel')}" stroke-width="2"/>`;
+      lab.push({x:X(s.a.mes), y:Y(y)+(i? 20:-12), t:`MES ${int(s.a.mes)}`, col:s.col});
+    }
+    if (view==='curves' && s.a.be && s.a.be <= xmax) {
+      g += `<rect x="${X(s.a.be)-4}" y="${Y(price)-4}" width="8" height="8" fill="${css('--panel')}" stroke="${s.col}" stroke-width="2" transform="rotate(45 ${X(s.a.be)} ${Y(price)})"/>`;
+      lab.push({x:X(s.a.be), y:Y(price)+(i?-12:20), t:`BE ${int(s.a.be)}`, col:s.col});
+    }
+  });
+  lab.forEach(l => { const x = Math.min(Math.max(l.x, pad.l+30), W-pad.r-30); g += `<text class="lbl" x="${x}" y="${l.y}" text-anchor="middle" style="fill:${css('--ink')}">${l.t}</text>`; });
+  if (view==='curves') g += `<text class="lbl" x="${W-pad.r-4}" y="${Y(price)-7}" text-anchor="end" style="fill:${css('--ink')}">Price ${$(price)}</text>`;
+  else g += `<text class="lbl" x="${W-pad.r-4}" y="${Y(1)-7}" text-anchor="end" style="fill:${css('--ink')}">MC = AC</text>`;
+  g += `<line id="xh" x1="0" x2="0" y1="${pad.t}" y2="${pad.t+ih}" stroke="${css('--ink2')}" stroke-width="1" visibility="hidden"/>`;
+  g += `<rect x="${pad.l}" y="${pad.t}" width="${iw}" height="${ih}" fill="transparent" id="hit1"/>`;
+  box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${view==='curves'?'Average and marginal cost curves':'Ratio of marginal to average cost'} for die and Machina routes">${g}</svg><div class="tip" hidden></div>`;
+  el('lg1').innerHTML = view==='curves'
+    ? `<span><i class="sw" style="border-color:var(--die)"></i>Die AC</span><span><i class="sw dash" style="border-color:var(--die)"></i>Die MC</span><span><i class="sw" style="border-color:var(--mach)"></i>Machina AC</span><span><i class="sw dash" style="border-color:var(--mach)"></i>Machina MC</span><span>● MES (MC = AC)</span><span>◇ Break-even</span>`
+    : `<span><i class="sw" style="border-color:var(--die)"></i>Die MC / AC</span><span><i class="sw" style="border-color:var(--mach)"></i>Machina MC / AC</span><span>● Crosses 1 at MES</span>`;
+  el('c1-sub').textContent = view==='curves'
+    ? 'Average cost falls as fixed and per-design costs spread over more units, then turns up when the employee runs out of hours and local leads get expensive. The dot is where MC crosses AC.'
+    : 'Below 1, each extra unit costs less than the average and scale still pays. Where the line crosses 1 is the minimum efficient scale.';
+  const svg = box.querySelector('svg'), tip = box.querySelector('.tip'), xh = svg.querySelector('#xh');
+  const move = (ev) => {
+    const r = svg.getBoundingClientRect(), sx = (ev.clientX - r.left) * W / r.width;
+    const q = Math.max(1, Math.min(xmax, (sx - pad.l) / iw * xmax));
+    xh.setAttribute('x1', X(q)); xh.setAttribute('x2', X(q)); xh.setAttribute('visibility','visible');
+    const n = M.get(v,'n',scen);
+    tip.innerHTML = view==='curves'
+      ? `<b>${int(q)} units · ${(q/n).toFixed(1)} designs</b><br>Die AC ${$(T.a.AC(q))} · MC ${$(T.a.MC(q))}<br>Machina AC ${$(Mm.a.AC(q))} · MC ${$(Mm.a.MC(q))}`
+      : `<b>${int(q)} units</b><br>Die MC/AC ${(T.a.MC(q)/T.a.AC(q)).toFixed(2)}<br>Machina MC/AC ${(Mm.a.MC(q)/Mm.a.AC(q)).toFixed(2)}`;
+    tip.hidden = false;
+    const px = X(q) * r.width / W; tip.style.left = Math.min(Math.max(px, 110), r.width-110) + 'px'; tip.style.top = (pad.t*r.width/W + 10) + 'px';
+    tip.style.transform = 'translate(-50%,0)';
+  };
+  const hit = svg.querySelector('#hit1');
+  hit.addEventListener('pointermove', move); hit.addEventListener('pointerdown', move);
+  hit.addEventListener('pointerleave', () => { tip.hidden = true; xh.setAttribute('visibility','hidden'); });
+}
+
+/* ---------- chart 2 ---------- */
+function renderC2(){
+  const nMax = Math.max(10, M.get(v,'n',scen));
+  const rows = [];
+  const base = JSON.parse(JSON.stringify(v));
+  for (let n=1;n<=nMax;n++){
+    base.n = n;
+    const r = {n};
+    for (const t of ['T','M']) { const a = M.analyze(M.build(base, scen, t)); r[t] = a.profitable ? a.be : null; }
+    rows.push(r);
+  }
+  const box = el('c2'); const W = Math.max(320, box.clientWidth), H = Math.round(Math.min(340, Math.max(240, W*0.4)));
+  const pad = {l:52, r:12, t:18, b:40}, iw = W-pad.l-pad.r, ih = H-pad.t-pad.b;
+  const vals = rows.flatMap(r=>[r.T,r.M]).filter(x=>x!=null);
+  const ymax = nice(Math.max(20, ...vals)*1.08);
+  const Y = (y)=> pad.t+ih - y/ymax*ih;
+  const bw = iw/rows.length, gap = 2, barW = Math.max(3, Math.min(26, (bw-10)/2));
+  let g = '';
+  g += `<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="${css('--muted')}" stroke-width="1.5"/></pattern></defs>`;
+  ticks(ymax,4).forEach(y=>{ g+=`<line x1="${pad.l}" x2="${W-pad.r}" y1="${Y(y)}" y2="${Y(y)}" stroke="${css('--grid')}"/><text x="${pad.l-8}" y="${Y(y)+4}" text-anchor="end">${int(y)}</text>`; });
+  const curN = M.get(v,'n',scen);
+  rows.forEach((r,i)=>{
+    const cx = pad.l + bw*i + bw/2;
+    if (r.n === curN) g += `<rect x="${pad.l+bw*i+1}" y="${pad.t}" width="${bw-2}" height="${ih}" fill="${css('--panel2')}"/>`;
+    [['T',-1],['M',1]].forEach(([t,side])=>{
+      const x = side<0 ? cx-gap/2-barW : cx+gap/2, col = t==='T'?css('--die'):css('--mach');
+      const val = r[t];
+      if (val==null){ g+=`<rect x="${x}" y="${pad.t}" width="${barW}" height="${ih}" fill="url(#hatch)" opacity=".35" data-t="${t}" data-n="${r.n}" class="hb"/><text x="${x+barW/2}" y="${pad.t+12}" text-anchor="middle" style="fill:${css('--ink2')}">∞</text>`; }
+      else { const y=Y(val), h=pad.t+ih-y; g+=`<path d="M${x} ${pad.t+ih} V${y+Math.min(4,h)} Q${x} ${y} ${x+Math.min(4,barW/2)} ${y} H${x+barW-Math.min(4,barW/2)} Q${x+barW} ${y} ${x+barW} ${y+Math.min(4,h)} V${pad.t+ih} Z" fill="${col}" data-t="${t}" data-n="${r.n}" class="hb"/>`; }
+    });
+    g += `<text x="${cx}" y="${H-pad.b+18}" text-anchor="middle" ${r.n===curN?`style="fill:${css('--ink')};font-weight:600"`:''}>${r.n}</text>`;
+  });
+  g += `<line x1="${pad.l}" x2="${W-pad.r}" y1="${pad.t+ih}" y2="${pad.t+ih}" stroke="${css('--ink2')}"/>`;
+  g += `<text x="${pad.l+iw/2}" y="${H-4}" text-anchor="middle">Units per design</text>`;
+  box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Break-even units per year by batch size">${g}</svg><div class="tip" hidden></div>`;
+  const svg = box.querySelector('svg'), tip = box.querySelector('.tip');
+  svg.querySelectorAll('.hb').forEach(b=>{
+    const show = (ev)=>{ const n=+b.dataset.n, t=b.dataset.t, r=rows[n-1], val=r[t];
+      tip.innerHTML = `<b>${n} unit${n>1?'s':''} per design · ${t==='T'?'Die':'Machina'}</b><br>${val==null?'Never breaks even':`Break-even ${int(val)} units/yr<br>= ${(val/n).toFixed(1)} designs/yr`}`;
+      const rc = svg.getBoundingClientRect(); tip.hidden=false; tip.style.left=Math.min(Math.max(ev.clientX-rc.left,100),rc.width-100)+'px'; tip.style.top=(ev.clientY-rc.top-8)+'px'; tip.style.transform='translate(-50%,-100%)'; };
+    b.addEventListener('pointermove', show); b.addEventListener('pointerdown', show);
+    b.addEventListener('pointerleave', ()=>tip.hidden=true);
+  });
+}
+
+/* ---------- tables ---------- */
+function renderT4(R){
+  const rows = [['s1','T'],['s1','M'],['s2','T'],['s2','M']].map(([s,t])=>{
+    const {m,a} = R[s+t]; const n = m.n;
+    const name = `${s==='s1'?'1 · worst':'2 · best'} — <span style="display:inline-flex;align-items:center;gap:6px"><i class="chip ${t}"></i>${t==='T'?'Die':'Machina'}</span>`;
+    return `<tr class="${s===scen?'cur':''}"><td>${name}</td>
+      <td>${a.profitable?int(a.be):'∞'}</td><td>${a.profitable?(a.be/n).toFixed(1):'—'}</td>
+      <td>${a.atEdge?'> '+int(M.QMAX):int(a.mes)}</td><td>${(a.mes/n).toFixed(1)}</td>
+      <td>${$(a.acMin)}</td><td>${(a.penaltyHalf*100).toFixed(1)}%</td>
+      <td>${int(m.capQ)}</td>
+      <td>${a.piStar>0?int(a.qStar):'—'}</td><td style="color:${a.piStar>=0?'var(--pos)':'var(--neg)'}">${a.piStar>=0?$(a.piStar):'−'+$(-a.piStar)}</td></tr>`;
+  }).join('');
+  el('t4').innerHTML = `<thead><tr><th>Case</th><th>Break-even<br>units/yr</th><th>Break-even<br>designs/yr</th><th>MES<br>units/yr</th><th>MES<br>designs/yr</th><th>Min AC<br>per unit</th><th>AC penalty<br>at ½ MES</th><th>Employee<br>full at</th><th>Profit-max<br>units/yr</th><th>Max annual<br>profit</th></tr></thead><tbody>${rows}</tbody>`;
+}
+function renderTB(R){
+  const q = +el('volq').value; el('volq-o').textContent = `${int(q)} units/yr · ${(q/M.get(v,'n',scen)).toFixed(1)} designs`;
+  const T = R[scen+'T'].m.parts(q), Mm = R[scen+'M'].m.parts(q);
+  const lines = [
+    ['tooling','Tooling or programming (per design)'],['acquisition','Marketing & lost quotes'],['labor','Labor (employee + overflow)'],
+    ['material','Steel blank'],['process','Press or robot time'],['finishing','Trim, finish, deburr'],['logistics','Freight, crating, trips'],['fixed','Fixed marketing, overhead, supplier']];
+  const mx = Math.max(...lines.map(([k])=>Math.max(T[k],Mm[k])/q));
+  const bar = (x,col)=>`<span class="bar" style="width:${Math.max(1,x/mx*90)}px;background:${col}"></span>${$(x)}`;
+  let tT=0,tM=0;
+  const body = lines.map(([k,l])=>{ const a=T[k]/q,b=Mm[k]/q; tT+=a;tM+=b; return `<tr><td>${l}</td><td>${bar(a,'var(--die)')}</td><td>${bar(b,'var(--mach)')}</td></tr>`; }).join('');
+  const price = M.get(v,'price',scen);
+  el('tb').innerHTML = `<thead><tr><th>Per unit</th><th>Die</th><th>Machina</th></tr></thead><tbody>${body}
+    <tr><td><b>Average cost</b></td><td><b>${$(tT)}</b></td><td><b>${$(tM)}</b></td></tr>
+    <tr><td>Margin vs. ${$(price)} price</td><td style="color:${price-tT>=0?'var(--pos)':'var(--neg)'}">${price-tT>=0?'':'−'}${$(Math.abs(price-tT))}</td><td style="color:${price-tM>=0?'var(--pos)':'var(--neg)'}">${price-tM>=0?'':'−'}${$(Math.abs(price-tM))}</td></tr></tbody>`;
+}
+
+/* ---------- wiring ---------- */
+let R = null, raf = 0;
+function render(){ raf = 0; R = runAll(); renderHead(R); renderC1(R); renderC2(); renderT4(R); renderTB(R); save(); }
+function schedule(){ if (!raf) raf = requestAnimationFrame(render); }
+function setScen(s){ scen = s; ['s1','s2'].forEach(k=>el('sc-'+k).setAttribute('aria-pressed', String(k===s))); syncSliders(); schedule(); }
+el('sc-s1').onclick = ()=>setScen('s1'); el('sc-s2').onclick = ()=>setScen('s2');
+el('v-curves').onclick = ()=>{ view='curves'; el('v-curves').setAttribute('aria-pressed','true'); el('v-ratio').setAttribute('aria-pressed','false'); if(R) renderC1(R); };
+el('v-ratio').onclick = ()=>{ view='ratio'; el('v-ratio').setAttribute('aria-pressed','true'); el('v-curves').setAttribute('aria-pressed','false'); if(R) renderC1(R); };
+el('volq').addEventListener('input', ()=>R && renderTB(R));
+el('reset').onclick = ()=>{ v = M.defaults(); syncSliders(); schedule(); toast('Assumptions reset to defaults'); };
+el('copy').onclick = async ()=>{
+  const txt = JSON.stringify(v, null, 2);
+  try { await navigator.clipboard.writeText(txt); toast('Assumptions copied as JSON'); }
+  catch(e){ const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); let ok=false; try{ok=document.execCommand('copy');}catch(_){} ta.remove(); toast(ok?'Assumptions copied as JSON':'Clipboard blocked here. Open the page in its own tab to copy.'); }
+};
+function toast(msg){ const t=document.createElement('div'); t.className='toast'; t.setAttribute('role','status'); t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2200); }
+let rz; window.addEventListener('resize', ()=>{ clearTimeout(rz); rz=setTimeout(()=>R&&(renderC1(R),renderC2()),120); });
+if (window.matchMedia) matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', ()=>R&&(renderC1(R),renderC2()));
+new MutationObserver(()=>R&&(renderC1(R),renderC2())).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+buildGroups(); setScen(scen);
+})();
+</script>
+
+</body>
+</html>
