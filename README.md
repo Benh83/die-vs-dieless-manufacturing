@@ -53,22 +53,21 @@ Scenario 1 ships parts from Machina's Los Angeles factory. Scenario 2 assumes a 
 
 ![Smallest viable firm by batch size](figures/batch_s1.png)
 
-## What the numbers say
+## the numbers say
 
 **1. At 1–10 panels per design, particularly for products cheaper than most of what Machina produces, dies aren't really their competitor.**
-With defaults, a die route costs **$60,162 per design**: a $45k die plus engineering, tryout, expected rework, storage, inspection, setup and financing. That's about **$12,000 per panel** at 5 panels per design, well above the $7,500 price. The die route only breaks even once each design repeats **11+ times** (147 panels a year at 11 per design). The real incumbent for bespoke work at this scale is skilled hand forming.
+With my assumptions, a die costs **$60,162 per design**: a $45k die plus engineering, tryout, expected rework, storage, inspection, setup and financing. which adds up to about **$12,000 per panel** at 5 panels per design, well above the $7,500 price. The die route only breaks even once each design repeats **11+ times** (147 panels a year at 11 per design). The incumbent for small-scale bespoke work at this scale is skilled hand forming.
 
-> _[ANALYSIS]_
+While RoboCraftsman has a significant price advantage over the other two options, the speed of iteration as opposed to a die, and the reduction of intensive manual labor both make that price advantage come with benefits rather than non-financial costs. 
 
 **2. Machina lowers the smallest viable firm to one person.**
-The smallest viable Machina firm is **1 employee selling 44 panels a year** (8.8 designs), or 35 panels with a regional factory. Hand forming needs **2 employees and 47 panels**. The barrier to entry falls modestly in units, but most of the change is in headcount.
+The smallest viable firm enabled by Machina is **1 employee selling 44 panels a year** (~9 designs), or 35 panels with a forward deployed Robocraftsman/regional Machina factory. While a 2-person hand forming firm needs only a few more panels to break even, the potential for a one person industrial production firm to make products of such complexity is novel. Interest in the one-person unicorn is usually focused on the software world, but so dramatically increasing the manufacturing capability of a one person firm may prove to be more important than we know. 
 
-> _[ ANALYSIS]_
+**3. A one person firm out-produces 12+ hand-formers, and per-employee production goes through the roof with RoboCraftsman  .**
+All-in labor per panel is **6.8 hours for Machina versus 75.9 for hand forming**. That's **273 vs. 24 panels per employee-year, about 11×**. the hand-forming method worked not because of how efficient it was, but because of how inflexible and expensive die creation is. 
 
-**3. The biggest effect is on output per employee, not tooling.**
-All-in labor per panel is **6.8 hours for Machina versus 75.9 for hand forming**. That's **273 vs. 24 panels per employee-year, about 11×**. For the hand route, output grows only by hiring craftspeople. For the Machina route, the firm is mainly design, sales and project management, and output grows without adding people.
+A lean, Robocraftsman-enabled firm, the firm is mainly design, sales and project management, and can be profitable at a wide range of outputs.
 
-> _[ANALYSIS: this is the industrial-organization core. For example, headcount stops being a measure of capacity, and a one-person firm can be efficient.]_
 
 **4. The efficient firm shrinks in headcount and grows in output.**
 
@@ -79,21 +78,15 @@ All-in labor per panel is **6.8 hours for Machina versus 75.9 for hand forming**
 
 Lowest average cost falls **28%** ($6,618 → $4,747). With a regional factory it falls **41%** ($3,880).
 
-> _[ANALYSIS]_
-
 **5. Distance to the Machina factory matters less than expected.**
-Going from 1,800 miles to 150 miles lowers the smallest viable Machina firm only from 44 to 35 panels a year. Machina already beats hand forming even when parts are shipped cross-country and crated.
+Going from 1,800 miles to 150 miles only lowers the smallest viable Robocraftsman-utilizing firm from 44 to 35 panels a year. I made the choice to put this in here because I'm partial to short supply chains, but transport is so small relative to other costs that it doesn't change much at a firm level.
 
-> _[ANALYSIS: what this implies for Machina's plans for distributed factories]_
+The biggest benefits to the distributed factories that Machina seems to be planning would be the ability to iterate on designs more quickly in person, and the eco-system of physical-world creativity that would emerge. 
 
-**6. With Machina, the market limits growth, not the technology.**
+**6. The market limits growth, not the technology.**
 
-- The largest profitable Machina firm makes about **1,430 panels with 6 employees**.
-- Past that, winning more work in a thin regional market costs more than the work earns.
-- Profit peaks at about 940 panels with 4 employees.
-- Treat the profit levels with caution: price is held fixed, and a real market would compete it down.
+The largest profitable Machina firm makes about **1,430 panels with 6 employees**. Past that, winning more work in a thin regional construction market costs more than the work earns. Profit peaks at just over 900 panels with 4 employees. While the market limits this use case, other high-growth use cases will emerge that haven't yet been economically worthwhile. 
 
-> _[ANALYSIS]_
 
 ## Checking the claim that Machina "replaces stamping dies"
 
