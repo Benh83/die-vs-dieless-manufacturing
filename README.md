@@ -38,7 +38,7 @@ Scenario 1 ships parts from Machina's Los Angeles factory. Scenario 2 assumes a 
 
 | Scenario | Route | Smallest viable firm | Minimum efficient scale (MES) | Near-efficient range (within 5% of lowest cost) | Lowest avg cost | Panels per employee-year | Quote win rate |
 |---|---|---|---|---|---|---|---|
-| 1 | Tooled | **Never viable** | 209 panels, 1 emp | 93–386 panels | $14,151 | 211 | 19% |
+| 1 | Tooled | **Never viable** | 
 | 1 | Hand-formed | **47 panels, 2 emp** | 155 panels, 7 emp | 71–259 panels, 3–13 emp | $6,618 | 24 | 29% |
 | 1 | Machina | **44 panels, 1 emp** | 271 panels, 1 emp | 188–670 panels, 1–3 emp | $4,747 | 273 | 38% |
 | 2 | Tooled | **Never viable** | 193 panels, 1 emp | 91–369 panels | $14,299 | 194 | 18% |
