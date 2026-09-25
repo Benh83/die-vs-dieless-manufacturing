@@ -41,11 +41,11 @@ Scenario 1 ships parts from Machina's Los Angeles factory. Scenario 2 assumes a 
 | 1 | Tooled | **Never viable** | 
 | 1 | Hand-formed | **47 panels, 2 emp** | 155 panels, 7 emp | 71–259 panels, 3–13 emp | $6,618 | 24 | 29% |
 | 1 | Machina | **44 panels, 1 emp** | 271 panels, 1 emp | 188–670 panels, 1–3 emp | $4,747 | 273 | 38% |
-| 2 | Tooled | **Never viable** | 193 panels, 1 emp | 91–369 panels | $14,299 | 194 | 18% |
+| 2 | Tooled | **Never viable** | 
 | 2 | Hand-formed | **47 panels, 2 emp** | 155 panels, 7 emp | 71–259 panels, 3–13 emp | $6,618 | 24 | 29% |
 | 2 | Machina | **35 panels, 1 emp** | 314 panels, 1 emp | 218–622 panels, 1–2 emp | $3,880 | 316 | 41% |
 
-"Smallest viable firm" is the lowest output, and the headcount at that output, where price covers long-run average cost. MES is the output with the lowest long-run average cost. Tooled has an MES but never gets its cost below the $7,500 price.
+"Smallest viable firm" is the lowest output, and the headcount at that output, where price covers long-run average cost. MES is the output with the lowest long-run average cost. Tooled never gets its cost below the $7,500 price.
 
 ![Firm-size map](figures/firm_map_s1.png)
 
@@ -55,9 +55,7 @@ Scenario 1 ships parts from Machina's Los Angeles factory. Scenario 2 assumes a 
 
 ## What the numbers say
 
-Each finding is stated as a fact from the model, followed by space for your interpretation.
-
-**1. At 1–10 panels per design, dies aren't really Machina's competitor.**
+**1. At 1–10 panels per design, particularly for products cheaper than most of what Machina produces, dies aren't really their competitor.**
 With defaults, a die route costs **$60,162 per design**: a $45k die plus engineering, tryout, expected rework, storage, inspection, setup and financing. That's about **$12,000 per panel** at 5 panels per design, well above the $7,500 price. The die route only breaks even once each design repeats **11+ times** (147 panels a year at 11 per design). The real incumbent for bespoke work at this scale is skilled hand forming.
 
 > _[ANALYSIS]_
