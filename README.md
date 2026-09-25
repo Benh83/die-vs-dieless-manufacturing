@@ -20,7 +20,7 @@ The test product is a custom **doubly curved aluminum facade or canopy panel**:
 - Sold at **$7,500** per panel, about $2,080 per m².
 - Every order is a new geometry. Each geometry sells **5 panels** by default (slider: 1–25).
 
-Doubly curved panels are the right test because they can't be made on a press brake or roll former: the surface bends in two directions at once, like a saddle or a dome. Without Machina, the options are a die, a form built for that geometry, or many skilled hours.
+Doubly curved panels are the right test because they cannot be made on a press brake or roll former: the surface bends in two directions at once, like a saddle or a dome. Without Machina, the options are a die, a form built for that geometry, or many skilled hours.
 
 Machina has been extremely effective in defense and aerospace, but I wanted to choose a non-defense for this industry analysis because ITAR and AS9100 add complexity that I don't understand well enough to factor in, but I assume that they would make it difficult for a micro-supplier to enter the market. Maybe Machina's controlled environment would allow small defense and aerospace competitors to emerge, but architectural applications have much more precedent of small firms succeeding. 
 
