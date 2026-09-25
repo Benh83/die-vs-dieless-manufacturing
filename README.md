@@ -2,13 +2,15 @@
 
 **Live model:** `https://benh83.github.io/machina-industrial-scale-enablement/`
  
+I have a background in quantitative economics, civics, and the liberal arts, and I'm trying to dig into interesting developments in hard tech where these three things collide. 
+
+The mission of Machina Labs "is to democratize manufacturing. Distributed factories full of Robocraftsmen that can turn almost any idea, no matter how complex, into something real for anybody." I want to understand how this process of democratization might play out. While much of Machina's current business is with larger firms, as they gain capacity, the radical change in cost structure and production process created by Robocraftsman can allow new forms of firms to emerge at the margins. 
 
 ## The question
 
 How does dieless robotic sheet-metal forming (Machina Labs' RoboCraftsman) change the size of custom metal-fabrication firm that can break even, and be efficient? Firm size is measured two ways: **employees** and **units produced per year**.
 
-Although looking at firms from 
-> _[ why firm size is the right lens. For example, minimum efficient scale, entry barriers, and what happens to market structure when a per-design fixed cost disappears.]_
+Understanding impact to potential firm size is important because it can help to translate the impacts of new tech into business terms. Machina cuts out massive fixed costs from both hand-formed and tooled production for micro-runs of complex sheet metal products. Every firm can do more with less, but minimum efficient scale and break even help us quantify the sort of firms that Machina can attract into the market that couldn't exist with hand-formed and tooled production. 
 
 ## Test case
 
@@ -20,7 +22,7 @@ The test product is a custom **doubly curved aluminum facade or canopy panel**:
 
 Doubly curved panels are the right test because they can't be made on a press brake or roll former: the surface bends in two directions at once, like a saddle or a dome. Without Machina, the options are a die, a form built for that geometry, or many skilled hours.
 
-> _[why architectural facades rather than defense. For example, no ITAR, no AS9100, no FAA, so a small firm can actually enter.]_
+Machina has been extremely effective in defense and aerospace, but I wanted to choose a non-defense for this industry analysis because ITAR and AS9100 add complexity that I don't understand well enough to factor in, but I assume that they would make it difficult for a micro-supplier to enter the market. Maybe Machina's controlled environment would allow small defense and aerospace competitors to emerge, but architectural applications have much more precedent of small firms succeeding. 
 
 The model compares three ways to make each geometry:
 
