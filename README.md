@@ -1,6 +1,6 @@
 # machina-industrial-scale-enablement
 
-**Live model:** `https://YOUR-USERNAME.github.io/machina-industrial-scale-enablement/`
+**Live model:** `https://benh83.github.io/machina-industrial-scale-enablement/`
 
 > _[YOUR INTRO: who you are, in one or two sentences, and why this question interested you.]_
 
