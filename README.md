@@ -61,10 +61,10 @@ With my assumptions, a die costs **$60,162 per design**: a $45k die plus enginee
 While RoboCraftsman has a significant price advantage over the other two options, the speed of iteration as opposed to a die, and the reduction of intensive manual labor both make that price advantage come with benefits rather than non-financial costs. 
 
 **2. Machina lowers the smallest viable firm to one person.**
-The smallest viable firm enabled by Machina is **1 employee selling 44 panels a year** (~9 designs), or 35 panels with a forward deployed Robocraftsman/regional Machina factory. While a 2-person hand forming firm needs only a few more panels to break even, the potential for a one person industrial production firm to make products of such complexity is novel. Interest in the one-person unicorn is usually focused on the software world, but so dramatically increasing the manufacturing capability of a one person firm may prove to be more important than we know. 
+The smallest viable firm enabled by Machina is **1 employee selling 44 panels a year** (~9 designs), or 35 panels with a forward deployed Robocraftsman/regional Machina factory. While a 2-person hand forming firm needs only a few more panels to break even, the potential for a one person industrial production firm to make products of such complexity is novel. Speculation about the one-person unicorn is usually concentrated in the software world, but so dramatically increasing the manufacturing capability of a one person firm may prove to be more important than we know. 
 
 **3. A one person firm out-produces 12+ hand-formers, and per-employee production goes through the roof with RoboCraftsman  .**
-All-in labor per panel is **6.8 hours for Machina versus 75.9 for hand forming**. That's **273 vs. 24 panels per employee-year, about 11×**. the hand-forming method worked not because of how efficient it was, but because of how inflexible and expensive die creation is. 
+All-in labor per panel is **6.8 hours for Machina versus 75.9 for hand forming**. That's **273 vs. 24 panels per employee-year, about 11×**. The hand-forming method worked not because of how efficient it was, but because of how inflexible and expensive die creation is. 
 
 A lean, Robocraftsman-enabled firm, the firm is mainly design, sales and project management, and can be profitable at a wide range of outputs.
 
@@ -81,34 +81,16 @@ Lowest average cost falls **28%** ($6,618 → $4,747). With a regional factory i
 **5. Distance to the Machina factory matters less than expected.**
 Going from 1,800 miles to 150 miles only lowers the smallest viable Robocraftsman-utilizing firm from 44 to 35 panels a year. I made the choice to put this in here because I'm partial to short supply chains, but transport is so small relative to other costs that it doesn't change much at a firm level.
 
-The biggest benefits to the distributed factories that Machina seems to be planning would be the ability to iterate on designs more quickly in person, and the eco-system of physical-world creativity that would emerge. 
+The biggest benefits to the distributed factories that Machina seems to be planning would be the ability to iterate on designs more quickly in person, and the eco-system of physical-world creativity that would almost inevitably emerge. 
 
 **6. The market limits growth, not the technology.**
 
 The largest profitable Machina firm makes about **1,430 panels with 6 employees**. Past that, winning more work in a thin regional construction market costs more than the work earns. Profit peaks at just over 900 panels with 4 employees. While the market limits this use case, other high-growth use cases will emerge that haven't yet been economically worthwhile. 
 
 
-## Checking the claim that Machina "replaces stamping dies"
-
-The model tests this by asking what incumbent process would otherwise make each kind of part Machina has made publicly.
-
-| Machina part | What would otherwise make it | Holds up? |
-|---|---|---|
-| Custom body panels for OEMs (Ford F-150 Lightning demo, Toyota partnership) | Transfer-press lines with draw, trim and flange dies, often **$0.5–1M+** per panel family | **Yes for customization and low volume.** At mass-production volume, stamping still wins. |
-| Air Force sustainment parts (Warner Robins) | Original tooling, often lost or worn out; hand forming; long supplier lead times | **Yes.** The Air Force reports parts **six months faster and three times more affordable**. |
-| NASA toroidal tank | Dedicated forming tools or welded segments | **Yes.** Formed without molds, dies or specialized tooling. |
-| Doubly curved facade panels (this model) | At large scale: stretch or multipoint forming (Dongdaemun Design Plaza, 22,000 panels, **$260/m²** after 3 years of R&D). At small scale: **hand forming**. Die casting ($7,000/m²) and hydroforming ($3,000/m²) are far more expensive. | **Only partly.** At 1–10 panels per design, Machina mostly replaces skilled hand labor, not dies. |
-
-Verdict: Machina does replace dedicated hard tooling, but the pasted claim overstates it in two ways:
-
-- **It doesn't replace high-volume stamping.** Machina's own automotive work targets customization and low volume.
-- **"Implemented instantly" is too strong.** A design change still needs reprogramming, a first article, and roughly a week to first parts.
-
-> _[ANALYSIS]_
-
 ## Key assumptions
 
-All values are **synthetic**: plausible, and meant to be argued with. The full list with ranges is in [`assumptions.csv`](assumptions.csv). Machina publishes no pricing, so every Machina cost below is an assumption.
+All values are **synthetic**. I couldn't find much info online on Machina pricing, so I will reach out soon and find out more. I could be totally off here, but the potential for custom auto panels and emerging applications means that construction applications are in the realm of possibility, even if they don't make up much of Machina's current work. The full list with ranges is in [`assumptions.csv`](assumptions.csv).
 
 | Assumption | Default | Basis |
 |---|---|---|
@@ -126,8 +108,6 @@ All values are **synthetic**: plausible, and meant to be argued with. The full l
 | Lead time: tooled / hand / Machina | 10 / 5 / 2 wk (Machina 1 wk in scenario 2) | Machina: first parts typically within a week |
 | Win rate halves every | 8 weeks of lead time | Construction schedules punish slow suppliers |
 | Local market depth | 200 leads/yr before lead cost doubles | Thin regional market for bespoke facades |
-
-> _[NOTE: which assumptions I'd most like an expert to challenge.]_
 
 ## Method
 
@@ -148,16 +128,15 @@ Long run:  N*(Q) = fewest employees that can do the hours
            MES = argmin LRAC;  smallest viable firm = min Q with price ≥ LRAC
 ```
 
-Long-run average cost jumps at each hire because headcount comes in whole people. It rises at large scale for two reasons: coordination loss as the team grows, and a thin regional market in which each extra lead costs more than the last.
+Long-run average cost jumps at each hire because headcount is a discrete variable. It rises at large scale for two reasons: coordination loss as the small team grows, and a thin regional market where each extra lead costs more than the last. Both of these factors would diminish if a firm were explicitly seeking to structure for a national market and scale, but I am approaching this analysis focused on local businesses in the model of a machine shop for a new era. 
 
 ## Limitations
 
-- Price is held fixed. In reality competition, or wider adoption of the technology, would push it toward the lowest average cost.
+- Price is held fixed. Over time, competition, or wider adoption of the technology, would push it toward the lowest average cost.
 - There is one blended wage. Skilled panel formers are scarce and would cost more, which would make the hand-formed route look worse.
-- Machina's capacity limits and job-queue priority (it also serves defense customers) aren't modeled.
+- Machina's capacity limits and job-queue priority (it also serves defense customers) aren't modeled, primarily because I have no idea. I would assume that the scenario modeled here would be possible in a few years after Machina builds up more capacity, and can service non mission-critical firms. I doubt that Machina would currently enter into this relatively lower-priority industry, but the technical capability Machina creates makes this sort of application a possible next step. 
 - Installation, warranty, taxes and working-capital limits beyond per-design financing are excluded.
 
-> _[NOTE: what I'd model next.]_
 
 ## Running it
 
