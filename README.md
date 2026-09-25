@@ -1,12 +1,11 @@
 # machina-industrial-scale-enablement
 
 **Live model:** `https://benh83.github.io/machina-industrial-scale-enablement/`
-
-> _[YOUR INTRO: who you are, in one or two sentences, and why this question interested you.]_
+ 
 
 ## The question
 
-How does dieless robotic sheet-metal forming (Machina Labs' RoboCraftsman) change the **size of custom metal-fabrication firm that can break even, and be efficient**? Firm size is measured two ways: **employees** and **units produced per year**.
+How does dieless robotic sheet-metal forming (Machina Labs' RoboCraftsman) change the size of custom metal-fabrication firm that can break even, and be efficient? Firm size is measured two ways: **employees** and **units produced per year**.
 
 > _[YOUR FRAMING: why firm size is the right lens. For example, minimum efficient scale, entry barriers, and what happens to market structure when a per-design fixed cost disappears.]_
 
