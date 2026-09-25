@@ -1009,7 +1009,7 @@ function renderMap(){
   const live = META.route_order.filter(r => R.routes[r].bands.some(b => b.lo != null));
   const dead = META.route_order.filter(r => !live.includes(r));
   let lastN = 1; live.forEach(r => R.routes[r].bands.forEach(b => { if (b.lo != null) lastN = Math.max(lastN, b.N); }));
-  const NS = Math.min(META.n_max, Math.max(lastN, N));
+  const NS = Math.min(META.n_max, lastN, Math.max(10, N)), hidden = lastN - NS;
   const lane = 9, lg = 3, rowGap = 10, rowH = Math.max(1, live.length) * (lane + lg) - lg + rowGap;
   const pad = {l: narrow ? 40 : 58, r: narrow ? 70 : 90, t: 30, b: 34};
   const ih = NS * rowH, H = pad.t + ih + pad.b, iw = W - pad.l - pad.r;
@@ -1033,16 +1033,16 @@ function renderMap(){
       g += `<text class="rng" x="${x0 + w + 6}" y="${y + lane - 1}">${int(b.lo)}–${int(b.hi)}</text>`;
     });
   }
+  g += caps;
   live.forEach((r, k) => {
     const l = R.routes[r].long; if (!l || !l.viable || l.mes_n > NS) return;
     const y = pad.t + (l.mes_n - 1) * rowH + k * (lane + lg) + lane / 2;
     g += `<circle cx="${X(l.mes_q)}" cy="${y}" r="5.5" fill="${COL[r]}" stroke="#fff" stroke-width="2"/>`;
   });
-  g += caps;
   box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Profitable output range by number of employees for each route">${g}</svg><div class="tip" hidden></div>`;
   legend('lg-map', [...live.map(r => lgChip(r, R.routes[r].name)),
     ...dead.map(r => `<span class="dead">${lgChip(r, R.routes[r].name + ': not profitable at any headcount')}</span>`),
-    '<span><i class="capk"></i>ran out of hours</span>', '<span><i class="mk"></i>minimum efficient scale</span>', `<span class="note-inline">Shaded row: ${N} employee${N > 1 ? 's' : ''} (top slider)</span>`]);
+    '<span><i class="capk"></i>ran out of hours</span>', '<span><i class="mk"></i>minimum efficient scale</span>', `<span class="note-inline">Shaded row: ${N} employee${N > 1 ? 's' : ''} (top slider)${hidden > 0 ? ` · larger firms up to ${lastN} employees hidden; raise the slider to see them` : ''}</span>`]);
   box.querySelectorAll('.hb').forEach(b => {
     const show = (ev) => { const r = b.dataset.r, n = +b.dataset.n, bd = R.routes[r].bands[n-1], rc = box.getBoundingClientRect();
       tipAt(box, `<b>${R.routes[r].name} · ${n} employee${n>1?'s':''}</b><br>Profitable from ${int(bd.lo)} to ${int(bd.hi)} panels/yr<br>Hours run out at ${int(bd.cap)}${bd.at_cap ? ' (this is the limit)' : ''}`, ev.clientX - rc.left, ev.clientY - rc.top); };

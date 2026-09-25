@@ -45,54 +45,56 @@ def end_labels(ax, items, x, gap):
 SHORT = {"T": "Tooled", "H": "Hand-formed", "M": "Machina"}
 
 
-def firm_map(o, path):
+def firm_map(o, path, rows_shown=10):
     R = o["routes"]
     live = [r for r in model.ROUTE_ORDER if any(b["lo"] for b in R[r]["bands"])]
     dead = [r for r in model.ROUTE_ORDER if r not in live]
-    last = max(b["N"] for r in live for b in R[r]["bands"] if b["lo"])
-    rows = list(range(1, last + 1))
-    lane, lg = 0.34, 0.08
-    fig, ax = plt.subplots(figsize=(10, 0.36 * len(rows) + 1.9), dpi=150)
+    lastN = {r: max(b["N"] for b in R[r]["bands"] if b["lo"]) for r in live}
+    rows = list(range(1, rows_shown + 1))
+    lane, lg = 0.36, 0.06
+    fig, ax = plt.subplots(figsize=(10, 4.4), dpi=150)
     for i in rows:
+        if i % 2 == 0:
+            ax.axhspan(i - 0.5, i + 0.5, color="#F7F8F9", zorder=0, lw=0)
         for k, r in enumerate(live):
             b = R[r]["bands"][i - 1]
             if not b["lo"]:
                 continue
             y = i + (k - (len(live) - 1) / 2) * (lane + lg)
-            ax.barh(y, b["hi"] - b["lo"], left=b["lo"], height=lane, color=COL[r], lw=0)
-            if b["at_cap"]:
-                ax.plot([b["hi"], b["hi"]], [y - lane * 0.75, y + lane * 0.75], color=INK, lw=2, solid_capstyle="butt", zorder=4)
-            ax.annotate(f"{b['lo']:,.0f}\u2013{b['hi']:,.0f}", (b["hi"], y), xytext=(6, 0), textcoords="offset points",
-                        va="center", fontsize=7.5, color="#3B434A", family="DejaVu Sans Mono")
+            ax.barh(y, b["hi"] - b["lo"], left=b["lo"], height=lane, color=COL[r], lw=0, zorder=2)
+            ax.annotate(f"{b['lo']:,.0f}\u2013{b['hi']:,.0f}", (b["hi"], y), xytext=(4, 0), textcoords="offset points",
+                        va="center", fontsize=7, color=MUTED)
     for k, r in enumerate(live):
         l = R[r]["long"]
-        if l["viable"]:
+        if l["viable"] and l["mes_n"] <= rows_shown:
             y = l["mes_n"] + (k - (len(live) - 1) / 2) * (lane + lg)
-            ax.plot(l["mes_q"], y, "o", ms=8, color=COL[r], mec="white", mew=1.5, zorder=3)
+            ax.plot(l["mes_q"], y, "o", ms=7, color=INK, mec="white", mew=1.5, zorder=4)
     ax.set_xscale("log")
-    lo = min(b["lo"] for r in live for b in R[r]["bands"] if b["lo"])
-    hi = max(b["hi"] for r in live for b in R[r]["bands"] if b["lo"])
-    ax.set_xlim(lo * 0.8, hi * 1.9)
-    ticks = [t for t in (20, 50, 100, 200, 500, 1000, 2000, 5000) if lo * 0.8 <= t <= hi * 1.9]
-    ax.set_xticks(ticks)
+    ax.set_xlim(30, 3000)
+    ax.set_xticks([50, 100, 200, 500, 1000, 2000])
     ax.xaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda x, _: f"{x:,.0f}"))
     ax.xaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
-    ax.set_ylim(last + 0.7, 0.3)
+    ax.set_ylim(rows_shown + 0.5, 0.5)
     ax.set_yticks(rows)
     ax.tick_params(axis="y", length=0)
-    ax.grid(axis="x", color=GRID, lw=1)
+    ax.grid(axis="x", color=GRID, lw=1, zorder=1)
     ax.spines["left"].set_visible(False)
     ax.set_xlabel("Panels per year (log scale)")
     ax.set_ylabel("Employees")
     handles = [matplotlib.patches.Patch(color=COL[r], label=model.ROUTES[r]) for r in live]
-    handles += [matplotlib.lines.Line2D([], [], color=INK, lw=2, marker="|", ms=10, ls="none", label="ran out of hours"),
-                matplotlib.lines.Line2D([], [], marker="o", color="#3B434A", mec="white", ms=8, ls="none", label="minimum efficient scale")]
-    handles += [matplotlib.patches.Patch(color=COL[r], label=f"{model.ROUTES[r]}: not profitable at any headcount") for r in dead]
-    ax.legend(handles=handles, frameon=False, loc="lower left", bbox_to_anchor=(0, 1.0), ncol=3, fontsize=8.5,
-              handlelength=1.4, columnspacing=1.6, borderaxespad=0.3)
-    style(ax, "Where a firm can survive", None)
-    ax.set_title("Where a firm can survive", loc="left", fontsize=13, fontweight="bold", color=INK, pad=44)
-    fig.tight_layout(); fig.savefig(path); plt.close(fig)
+    handles += [matplotlib.lines.Line2D([], [], marker="o", color=INK, mec="white", ms=7, ls="none", label="lowest-cost size (MES)")]
+    more = ", ".join(f"{model.ROUTES[r]} to {lastN[r]}" for r in live if lastN[r] > rows_shown)
+    sub = "Output range where a firm of each size makes money."
+    if dead:
+        sub += " " + " and ".join(model.ROUTES[r] for r in dead) + " is not profitable at any size."
+    if more:
+        sub += f"\nFirst {rows_shown} headcounts shown ({more} employees)."
+    fig.subplots_adjust(left=0.07, right=0.98, top=0.76, bottom=0.14)
+    fig.text(0.07, 0.955, "Where a firm can survive", fontsize=13, fontweight="bold", color=INK, va="top")
+    fig.text(0.07, 0.895, sub, fontsize=9, color=MUTED, va="top")
+    ax.legend(handles=handles, frameon=False, loc="lower right", bbox_to_anchor=(1.0, 1.0), ncol=3,
+              fontsize=8.5, handlelength=1.2, columnspacing=1.4, borderaxespad=0.2)
+    fig.savefig(path); plt.close(fig)
 
 
 def lrac(o, price, path):
