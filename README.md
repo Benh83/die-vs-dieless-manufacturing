@@ -7,7 +7,8 @@
 
 How does dieless robotic sheet-metal forming (Machina Labs' RoboCraftsman) change the size of custom metal-fabrication firm that can break even, and be efficient? Firm size is measured two ways: **employees** and **units produced per year**.
 
-> _[YOUR FRAMING: why firm size is the right lens. For example, minimum efficient scale, entry barriers, and what happens to market structure when a per-design fixed cost disappears.]_
+Although looking at firms from 
+> _[ why firm size is the right lens. For example, minimum efficient scale, entry barriers, and what happens to market structure when a per-design fixed cost disappears.]_
 
 ## Test case
 
@@ -19,7 +20,7 @@ The test product is a custom **doubly curved aluminum facade or canopy panel**:
 
 Doubly curved panels are the right test because they can't be made on a press brake or roll former: the surface bends in two directions at once, like a saddle or a dome. Without Machina, the options are a die, a form built for that geometry, or many skilled hours.
 
-> _[YOUR NOTE: why architectural facades rather than defense. For example, no ITAR, no AS9100, no FAA, so a small firm can actually enter.]_
+> _[why architectural facades rather than defense. For example, no ITAR, no AS9100, no FAA, so a small firm can actually enter.]_
 
 The model compares three ways to make each geometry:
 
@@ -57,17 +58,17 @@ Each finding is stated as a fact from the model, followed by space for your inte
 **1. At 1–10 panels per design, dies aren't really Machina's competitor.**
 With defaults, a die route costs **$60,162 per design**: a $45k die plus engineering, tryout, expected rework, storage, inspection, setup and financing. That's about **$12,000 per panel** at 5 panels per design, well above the $7,500 price. The die route only breaks even once each design repeats **11+ times** (147 panels a year at 11 per design). The real incumbent for bespoke work at this scale is skilled hand forming.
 
-> _[YOUR ANALYSIS]_
+> _[ANALYSIS]_
 
 **2. Machina lowers the smallest viable firm to one person.**
 The smallest viable Machina firm is **1 employee selling 44 panels a year** (8.8 designs), or 35 panels with a regional factory. Hand forming needs **2 employees and 47 panels**. The barrier to entry falls modestly in units, but most of the change is in headcount.
 
-> _[YOUR ANALYSIS]_
+> _[ ANALYSIS]_
 
 **3. The biggest effect is on output per employee, not tooling.**
 All-in labor per panel is **6.8 hours for Machina versus 75.9 for hand forming**. That's **273 vs. 24 panels per employee-year, about 11×**. For the hand route, output grows only by hiring craftspeople. For the Machina route, the firm is mainly design, sales and project management, and output grows without adding people.
 
-> _[YOUR ANALYSIS: this is the industrial-organization core. For example, headcount stops being a measure of capacity, and a one-person firm can be efficient.]_
+> _[ANALYSIS: this is the industrial-organization core. For example, headcount stops being a measure of capacity, and a one-person firm can be efficient.]_
 
 **4. The efficient firm shrinks in headcount and grows in output.**
 
@@ -78,12 +79,12 @@ All-in labor per panel is **6.8 hours for Machina versus 75.9 for hand forming**
 
 Lowest average cost falls **28%** ($6,618 → $4,747). With a regional factory it falls **41%** ($3,880).
 
-> _[YOUR ANALYSIS]_
+> _[ANALYSIS]_
 
 **5. Distance to the Machina factory matters less than expected.**
 Going from 1,800 miles to 150 miles lowers the smallest viable Machina firm only from 44 to 35 panels a year. Machina already beats hand forming even when parts are shipped cross-country and crated.
 
-> _[YOUR ANALYSIS: what this implies for Machina's plans for distributed factories]_
+> _[ANALYSIS: what this implies for Machina's plans for distributed factories]_
 
 **6. With Machina, the market limits growth, not the technology.**
 
@@ -92,7 +93,7 @@ Going from 1,800 miles to 150 miles lowers the smallest viable Machina firm only
 - Profit peaks at about 940 panels with 4 employees.
 - Treat the profit levels with caution: price is held fixed, and a real market would compete it down.
 
-> _[YOUR ANALYSIS]_
+> _[ANALYSIS]_
 
 ## Checking the claim that Machina "replaces stamping dies"
 
@@ -110,7 +111,7 @@ Verdict: Machina does replace dedicated hard tooling, but the pasted claim overs
 - **It doesn't replace high-volume stamping.** Machina's own automotive work targets customization and low volume.
 - **"Implemented instantly" is too strong.** A design change still needs reprogramming, a first article, and roughly a week to first parts.
 
-> _[YOUR ANALYSIS]_
+> _[ANALYSIS]_
 
 ## Key assumptions
 
@@ -133,7 +134,7 @@ All values are **synthetic**: plausible, and meant to be argued with. The full l
 | Win rate halves every | 8 weeks of lead time | Construction schedules punish slow suppliers |
 | Local market depth | 200 leads/yr before lead cost doubles | Thin regional market for bespoke facades |
 
-> _[YOUR NOTE: which assumptions you'd most like an expert to challenge.]_
+> _[NOTE: which assumptions I'd most like an expert to challenge.]_
 
 ## Method
 
@@ -163,7 +164,7 @@ Long-run average cost jumps at each hire because headcount comes in whole people
 - Machina's capacity limits and job-queue priority (it also serves defense customers) aren't modeled.
 - Installation, warranty, taxes and working-capital limits beyond per-design financing are excluded.
 
-> _[YOUR NOTE: what you'd model next.]_
+> _[NOTE: what I'd model next.]_
 
 ## Running it
 
