@@ -1,6 +1,6 @@
 # machina-industrial-scale-enablement
 
-**Live model:** `https://benh83.github.io/machina-industrial-scale-enablement/`
+**Live model:** https://benh83.github.io/machina-industrial-scale-enablement/
  
 I have a background in quantitative economics, civics, and the liberal arts, and I'm trying to dig into interesting developments in hard tech where these three things collide. 
 
